@@ -1,0 +1,367 @@
+<body class="layout"> 
+ <div class="Bloko-Notification-Manager notification-manager"> 
+ </div> 
+ <div class="page"> 
+  <div class="top-bar HH-Header"> 
+   <button type="button" class="back-button HH-Back"> <script data-name="Components/Back" data-params="{}"></script> </button> 
+   <div class="menu"> 
+    <script data-name="Components/Proxies/Bloko/Toggle" data-params="{&quot;expandClass&quot;: &quot;menu_active&quot;}"></script> 
+    <a href="/account/login" class="login-button" data-qa="menu-button"> Войти </a>
+   </div> 
+   <a href="/" class="top-bar__logo" data-qa="logo-icon"> 
+    <div class="logo"></div> </a> 
+  </div> 
+  <div class="content HH-Content">
+   <div class="HH-Unsupported-Browser important-info important-info_invisible">
+     Ваш браузер устарел и&nbsp;больше не&nbsp;поддерживается. Для корректной работы сайта рекомендуем использовать один из&nbsp;современных браузеров. 
+    <a href="/article/176" class="important-info__link"> Узнать&nbsp;подробнее </a> 
+   </div> 
+   <script>
+    (function() {
+        if (!window.bloko || !window.bloko.getUserAgentDetails) {
+            return
+        }
+        if (!window.bloko.getUserAgentDetails(window.navigator.userAgent).isSupported) {
+            var div = document.querySelector('.HH-Unsupported-Browser');
+            div.classList.remove('important-info_invisible');
+        }
+    })();
+</script> 
+   <div class="vacancy vacancy_fav-nopadding"> 
+    <script type="text/html" class="HH-Favorite-Limit-Template">
+    Превышен лимит количества отобранных вакансий.
+    <button class="HH-Favorite-Cleanup bloko-notification__link">Удалить самую старую вакансию и добавить эту</button>
+</script> 
+    <div class="favorite-action"> 
+     <form method="post" action="/favorite/add?vacancyId=22084598" class="HH-Favorite-Form"> 
+      <input type="hidden" name="_xsrf" value="1de7669a35596983f198be3343ec3450"> 
+      <input type="hidden" name="backurl" value="https://m.hh.ru/vacancy/22084598#vacancy_22084598"> 
+      <input type="hidden" name="vacancyId" value="22084598"> 
+      <button type="submit" class="favorite-button
+                           
+                           
+                           HH-Favorite-Button" data-qa="favorites-add" data-action="add"> </button> 
+     </form> 
+    </div> 
+    <div class="vacancy-common"> 
+     <h1 class="vacancy__name" data-qa="vacancy-title">Java-разработчик</h1> 
+     <div class="vacancy__salary"> 
+      <span data-qa="vacancy-salary"> 100 000—200 000 руб. </span> на руки 
+     </div> 
+    </div> 
+    <div class="vacancy-info"> 
+     <div class="vacancy__address"> 
+      <span data-qa="vacancy-region"> Санкт-Петербург, м. Московские ворота</span>, 
+      <span data-qa="vacancy-date">24 июл</span> 
+     </div> 
+     <div class="vacancy__experience">
+       Требуемый опыт работы: 1–3 года 
+     </div> 
+     <div> 
+      <span>Полная занятость</span>, 
+      <span>полный день</span> 
+     </div> 
+    </div> 
+    <a href="/employer/934019" class="navigate-wrapper" data-qa="vacancy-employer"> 
+     <div class="navigate navigate_nopadding">
+       ООО ТекФорс Инжиниринг 
+      <div class="navigate__hint">
+       Компания прошла проверку на сайте
+      </div> 
+     </div> </a> 
+    <div class="vacancy-passage"> 
+     <a href="/vacancy_response?vacancy_id=22084598" class="vacancy-passage__link"> <script data-name="Components/TrackAnalyticsEvent" data-params="{&quot;category&quot;: &quot;applicant&quot;, &quot;on&quot;: &quot;click&quot;, &quot;event&quot;: &quot;responseSent&quot;, &quot;label&quot;: &quot;authorize&quot;}"></script> Откликнуться </a> 
+    </div> 
+    <div class="vacancy__description usergenerate" data-qa="vacancy-description">
+     <p>Наша компания занимается полным циклом разработки больших программных решений в финансовой сфере.</p> 
+     <p>Сейчас мы ищем талантливых специалистов в команду разработки в Санкт-Петербурге, готовых принимать решения и совершенствовать себя и наш продукт для предоставления наилучшей финансовой аналитики для одного из крупнейших государственных заказчиков. Мы ориентированы на создание команды профессионалов, способных решать сложные и интересные задачи. Демократичная атмосфера в нашей компании позволит каждому привнести в проект свои идеи и воплотить их в жизнь.</p> 
+     <p><strong>Обязанности</strong>:</p> 
+     <ul> 
+      <li>Разработка и сопровождение продуктов компании;</li> 
+      <li>Разработка качественных высоконагруженных и отказоустойчивых систем;</li> 
+      <li>Разработка и развитие новых решений в существующих проектах;</li> 
+      <li>Рефакторинг существующего кода.</li> 
+     </ul> 
+     <p><strong>Что мы хотим видеть в кандидате:</strong></p> 
+     <ul> 
+      <li>Хорошее знание языка Java;</li> 
+      <li>Опыт разработки приложений с использованием PostgreSQL или MySQL;</li> 
+      <li>Хорошее знание структур данных и алгоритмов;</li> 
+      <li>Твердое знание принципов ООП и умение их применять.</li> 
+     </ul> 
+     <p>Языки и технологии, которые мы используем:</p> 
+     <ul> 
+      <li>Java</li> 
+      <li>Spring Framework (Core, Web, Integration, Jdbc etc.)</li> 
+      <li>Hibernate</li> 
+      <li>org.apache.commons.*</li> 
+      <li>Gradle, Maven</li> 
+      <li>Liquibase, Flyway</li> 
+      <li>AstraLinux</li> 
+      <li>Git(GitLab)</li> 
+     </ul> 
+     <p>Плюсом будет:</p> 
+     <ul> 
+      <li>Опыт работы с Linux;</li> 
+      <li>Умение самостоятельно анализировать поставленную задачу;</li> 
+      <li>Желание писать красивый код и хорошую документацию;</li> 
+      <li>Увлечённость профессией, постоянное саморазвитие, энтузиазм и креативность;</li> 
+      <li>Желание работать в команде.</li> 
+     </ul> 
+     <p><strong>Условия</strong>:</p> 
+     <ul> 
+      <li>Мы готовы предложить интересную насыщенную работу и достойную заработную оплату;</li> 
+      <li>Сотрудники оформляются по ТК РФ с официальной выплатой заработной платы;</li> 
+      <li>Работаем в новом офисе с панорамными окнами, в 10 минутах от метро;</li> 
+      <li>Готовы согласовывать график работы.</li> 
+     </ul>
+    </div> 
+    <div class="vacancy-keyskills"> 
+     <div class="vacancy-keyskills__header">
+      Ключевые навыки
+     </div> 
+     <div> 
+      <span class="keyskill">Java</span> 
+      <span class="keyskill">MySQL</span> 
+      <span class="keyskill">PostgreSQL</span> 
+      <span class="keyskill">Spring Framework</span> 
+      <span class="keyskill">ООП</span> 
+      <span class="keyskill">Git</span> 
+     </div> 
+    </div> 
+    <div class="vacancy-actions" id="actions"> 
+     <a class="bloko-button bloko-button_primary bloko-button_stretched" href="/vacancy_response?vacancy_id=22084598" data-qa="vacancy-respond"> <script data-name="Components/TrackAnalyticsEvent" data-params="{&quot;category&quot;: &quot;applicant&quot;, &quot;on&quot;: &quot;click&quot;, &quot;event&quot;: &quot;responseSent&quot;, &quot;label&quot;: &quot;authorize&quot;}"></script> Откликнуться</a> 
+    </div> 
+    <div class="vacancy-share"> 
+     <div class="vacancy-share__title">
+      Поделиться вакансией
+     </div> 
+     <form class="vacancy-share__email" action="" method="post" data-qa="vacancy-share__email"> 
+      <input type="hidden" name="_xsrf" value="1de7669a35596983f198be3343ec3450"> 
+      <div class="line"> 
+       <input class="bloko-input" type="email" name="email" value="" maxlength="254" required placeholder="Отправить вакансию по почте"> 
+       <div class="line__element"> 
+        <button type="submit" class="bloko-button bloko-button_icon-only bloko-button_primary"> <span class="bloko-icon bloko-icon_mail bloko-icon_initial-inverted"></span> </button> 
+       </div> 
+      </div> 
+     </form> 
+     <div class="vacancy-share__social"> 
+      <a class="social-icon social-icon_sharing social-icon_vk HH-Social-Share" data-qa="share-button-vk" data-type="vk" href="https://vk.com/share.php?url=https%3A%2F%2Fhh.ru%2Fvacancy%2F22084598%3Futm_campaign%3Dvk%26utm_medium%3Dmobile%26utm_source%3Dsocial&amp;title=Вакансия Java-%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA в Санкт-Петербурге, работа в ТекФорс Инжиниринг&amp;description=Вакансия Java-%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA. Зарплата: от 100000 до 200000 руб.. %D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3. Требуемый опыт: 1–3 года. Полная занятость. Дата публикации: 24.07.2017" target="_blank" rel="nofollow"> <script data-name="Components/TrackAnalyticsEvent" data-params="{&quot;category&quot;: &quot;share&quot;, &quot;on&quot;: &quot;mouseup&quot;, &quot;event&quot;: &quot;vacancy&quot;, &quot;label&quot;: &quot;vk&quot;}"></script> </a> 
+      <a class="social-icon social-icon_sharing social-icon_fb HH-Social-Share" data-qa="share-button-fb" data-type="fb" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fhh.ru%2Fvacancy%2F22084598%3Futm_campaign%3Dfb%26utm_medium%3Dmobile%26utm_source%3Dsocial&amp;title=Вакансия Java-%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA в Санкт-Петербурге, работа в ТекФорс Инжиниринг&amp;description=Вакансия Java-%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA. Зарплата: от 100000 до 200000 руб.. %D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3. Требуемый опыт: 1–3 года. Полная занятость. Дата публикации: 24.07.2017" target="_blank" rel="nofollow"> <script data-name="Components/TrackAnalyticsEvent" data-params="{&quot;category&quot;: &quot;share&quot;, &quot;on&quot;: &quot;mouseup&quot;, &quot;event&quot;: &quot;vacancy&quot;, &quot;label&quot;: &quot;fb&quot;}"></script> </a> 
+      <a class="social-icon social-icon_sharing social-icon_twitter HH-Social-Share" data-qa="share-button-twitter" data-type="twitter" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fhh.ru%2Fvacancy%2F22084598%3Futm_campaign%3Dtwitter%26utm_medium%3Dmobile%26utm_source%3Dsocial&amp;text=Вакансия Java-%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA в Санкт-Петербурге, работа в ТекФорс Инжиниринг" target="_blank" rel="nofollow"> <script data-name="Components/TrackAnalyticsEvent" data-params="{&quot;category&quot;: &quot;share&quot;, &quot;on&quot;: &quot;mouseup&quot;, &quot;event&quot;: &quot;vacancy&quot;, &quot;label&quot;: &quot;twitter&quot;}"></script> </a> 
+     </div> 
+    </div> 
+    <div class="clickme-wrapper"> 
+     <div class="banner-place-wrapper
+                
+                     banner-place_separated
+                
+                     banner-place_clickme
+                "> 
+      <div class="banner-place banner-place_661" data-banner-id="661"></div> 
+      <div class="banner-place banner-place_662" data-banner-id="662"></div> 
+      <div class="banner-place banner-place_663" data-banner-id="663"></div> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="vacancy-similar"> 
+    <h2 class="vacancy-similar__title">Похожие вакансии</h2> 
+    <ul class="vacancy-list"> 
+     <li class="vacancy-short vacancy-short_standard HH-VacancyContacts-Item" id="vacancy_22112125" data-qa="vacancy-item"> 
+      <div class="favorite-action"> 
+       <form method="post" action="/favorite/add?vacancyId=22112125" class="HH-Favorite-Form"> 
+        <input type="hidden" name="_xsrf" value="1de7669a35596983f198be3343ec3450"> 
+        <input type="hidden" name="backurl" value="https://m.hh.ru/vacancy/22084598#vacancy_22112125"> 
+        <input type="hidden" name="vacancyId" value="22112125"> 
+        <button type="submit" class="favorite-button
+                           
+                           favorite-button_offset
+                           HH-Favorite-Button" data-qa="favorites-add" data-action="add"> </button> 
+       </form> 
+      </div> <a class="vacancy-short-link" href="https://m.hh.ru/vacancy/22112125?from=SIMILAR_QUERY" data-qa="vacancy-link"></a> 
+      <div class="vacancy-short__name" data-qa="vacancy-name">
+        Senior Java Developer 
+      </div> <span class="vacancy-short__city">Санкт-Петербург</span>
+      <div class="vacancy-short__company">
+        ООО Ай Ти Константа&nbsp;
+       <span class="bloko-icon bloko-icon_done bloko-icon_initial-action"></span>
+      </div> 
+      <div class="vacancy-short__metros"> 
+       <span class="vacancy-short__metro"> <span class="bloko-metro-pin" style="background: #009A49"></span>Приморская</span>
+      </div> 
+      <div class="vacancy-short-footer"> 
+       <div class="vacancy-short-footer-item"> 
+        <div class="vacancy-short__pubdate" data-qa="vacancy-pubdate">
+          сегодня 
+        </div> 
+       </div> 
+       <div class="vacancy-short-footer-item"> 
+        <a class="vacancy-short-footer__button-wrapper" href="/vacancy_response?vacancy_id=22112125"> Откликнуться </a> 
+       </div> 
+      </div></li> 
+     <li class="vacancy-short vacancy-short_standard_plus HH-VacancyContacts-Item" id="vacancy_21956266" data-qa="vacancy-item"> 
+      <div class="favorite-action"> 
+       <form method="post" action="/favorite/add?vacancyId=21956266" class="HH-Favorite-Form"> 
+        <input type="hidden" name="_xsrf" value="1de7669a35596983f198be3343ec3450"> 
+        <input type="hidden" name="backurl" value="https://m.hh.ru/vacancy/22084598#vacancy_21956266"> 
+        <input type="hidden" name="vacancyId" value="21956266"> 
+        <button type="submit" class="favorite-button
+                           
+                           favorite-button_offset
+                           HH-Favorite-Button" data-qa="favorites-add" data-action="add"> </button> 
+       </form> 
+      </div> <a class="vacancy-short-link" href="https://m.hh.ru/vacancy/21956266?from=SIMILAR_QUERY" data-qa="vacancy-link"></a> 
+      <div class="vacancy-short__name" data-qa="vacancy-name">
+        Java-разработчик 
+      </div> <span class="vacancy-short__salary" data-qa="vacancy-salary">80 000 – 120 000<span class="currency">₽</span></span> <span class="vacancy-short__city">Санкт-Петербург</span>
+      <div class="vacancy-short__company">
+        ООО Orbis Tertius&nbsp;
+       <span class="bloko-icon bloko-icon_done bloko-icon_initial-action"></span>
+      </div> 
+      <div class="vacancy-short-footer"> 
+       <div class="vacancy-short-footer-item"> 
+        <div class="vacancy-short__pubdate" data-qa="vacancy-pubdate">
+          вчера 
+        </div> 
+       </div> 
+       <div class="vacancy-short-footer-item"> 
+        <a class="vacancy-short-footer__button-wrapper" href="/vacancy_response?vacancy_id=21956266"> Откликнуться </a> 
+       </div> 
+      </div></li> 
+     <li class="vacancy-short vacancy-short_standard_plus HH-VacancyContacts-Item" id="vacancy_21839371" data-qa="vacancy-item"> 
+      <div class="favorite-action"> 
+       <form method="post" action="/favorite/add?vacancyId=21839371" class="HH-Favorite-Form"> 
+        <input type="hidden" name="_xsrf" value="1de7669a35596983f198be3343ec3450"> 
+        <input type="hidden" name="backurl" value="https://m.hh.ru/vacancy/22084598#vacancy_21839371"> 
+        <input type="hidden" name="vacancyId" value="21839371"> 
+        <button type="submit" class="favorite-button
+                           
+                           favorite-button_offset
+                           HH-Favorite-Button" data-qa="favorites-add" data-action="add"> </button> 
+       </form> 
+      </div> <a class="vacancy-short-link" href="https://m.hh.ru/vacancy/21839371?from=SIMILAR_QUERY" data-qa="vacancy-link"></a> 
+      <div class="vacancy-short__name" data-qa="vacancy-name">
+        Java-разработчик 
+      </div> <span class="vacancy-short__salary" data-qa="vacancy-salary">от 100 000<span class="currency">₽</span></span> <span class="vacancy-short__city">Санкт-Петербург</span>
+      <div class="vacancy-short__company">
+        Wikiroutes&nbsp;
+       <span class="bloko-icon bloko-icon_done bloko-icon_initial-action"></span>
+      </div> 
+      <div class="vacancy-short-footer"> 
+       <div class="vacancy-short-footer-item"> 
+        <div class="vacancy-short__pubdate" data-qa="vacancy-pubdate">
+          сегодня 
+        </div> 
+       </div> 
+       <div class="vacancy-short-footer-item"> 
+        <a class="vacancy-short-footer__button-wrapper" href="/vacancy_response?vacancy_id=21839371"> Откликнуться </a> 
+       </div> 
+      </div></li> 
+     <li class="vacancy-short vacancy-short_standard HH-VacancyContacts-Item" id="vacancy_22113740" data-qa="vacancy-item"> 
+      <div class="favorite-action"> 
+       <form method="post" action="/favorite/add?vacancyId=22113740" class="HH-Favorite-Form"> 
+        <input type="hidden" name="_xsrf" value="1de7669a35596983f198be3343ec3450"> 
+        <input type="hidden" name="backurl" value="https://m.hh.ru/vacancy/22084598#vacancy_22113740"> 
+        <input type="hidden" name="vacancyId" value="22113740"> 
+        <button type="submit" class="favorite-button
+                           
+                           favorite-button_offset
+                           HH-Favorite-Button" data-qa="favorites-add" data-action="add"> </button> 
+       </form> 
+      </div> <a class="vacancy-short-link" href="https://m.hh.ru/vacancy/22113740?from=SIMILAR_QUERY" data-qa="vacancy-link"></a> 
+      <div class="vacancy-short__name" data-qa="vacancy-name">
+        Java Developer 
+      </div> <span class="vacancy-short__city">Санкт-Петербург</span>
+      <div class="vacancy-short__company">
+        Тинькофф&nbsp;
+       <span class="bloko-icon bloko-icon_done bloko-icon_initial-action"></span>
+      </div> 
+      <div class="vacancy-short-footer"> 
+       <div class="vacancy-short-footer-item"> 
+        <div class="vacancy-short__pubdate" data-qa="vacancy-pubdate">
+          сегодня 
+        </div> 
+       </div> 
+       <div class="vacancy-short-footer-item"> 
+        <a class="vacancy-short-footer__button-wrapper" href="/vacancy_response?vacancy_id=22113740"> Откликнуться </a> 
+       </div> 
+      </div></li> 
+     <li class="vacancy-short vacancy-short_standard HH-VacancyContacts-Item" id="vacancy_22106461" data-qa="vacancy-item"> 
+      <div class="favorite-action"> 
+       <form method="post" action="/favorite/add?vacancyId=22106461" class="HH-Favorite-Form"> 
+        <input type="hidden" name="_xsrf" value="1de7669a35596983f198be3343ec3450"> 
+        <input type="hidden" name="backurl" value="https://m.hh.ru/vacancy/22084598#vacancy_22106461"> 
+        <input type="hidden" name="vacancyId" value="22106461"> 
+        <button type="submit" class="favorite-button
+                           
+                           favorite-button_offset
+                           HH-Favorite-Button" data-qa="favorites-add" data-action="add"> </button> 
+       </form> 
+      </div> <a class="vacancy-short-link" href="https://m.hh.ru/vacancy/22106461?from=SIMILAR_QUERY" data-qa="vacancy-link"></a> 
+      <div class="vacancy-short__name" data-qa="vacancy-name">
+        Senior Java Developer 
+      </div> <span class="vacancy-short__city">Санкт-Петербург</span>
+      <div class="vacancy-short__company">
+        Murano Software&nbsp;
+       <span class="bloko-icon bloko-icon_done bloko-icon_initial-action"></span>
+      </div> 
+      <div class="vacancy-short__metros"> 
+       <span class="vacancy-short__metro"> <span class="bloko-metro-pin" style="background: #D6083B"></span>Выборгская</span>
+      </div> 
+      <div class="vacancy-short-footer"> 
+       <div class="vacancy-short-footer-item"> 
+        <div class="vacancy-short__pubdate" data-qa="vacancy-pubdate">
+          сегодня 
+        </div> 
+       </div> 
+       <div class="vacancy-short-footer-item"> 
+        <a class="vacancy-short-footer__button-wrapper" href="/vacancy_response?vacancy_id=22106461"> Откликнуться </a> 
+       </div> 
+      </div></li> 
+     <li class="banner-place-wrapper
+                
+                     banner-place_vacancy
+                "> 
+      <div class="banner-place banner-place_333" data-banner-id="333"></div> </li> 
+     <li class="vacancy-short vacancy-short_standard HH-VacancyContacts-Item" id="vacancy_19002528" data-qa="vacancy-item"> 
+      <div class="favorite-action"> 
+       <form method="post" action="/favorite/add?vacancyId=19002528" class="HH-Favorite-Form"> 
+        <input type="hidden" name="_xsrf" value="1de7669a35596983f198be3343ec3450"> 
+        <input type="hidden" name="backurl" value="https://m.hh.ru/vacancy/22084598#vacancy_19002528"> 
+        <input type="hidden" name="vacancyId" value="19002528"> 
+        <button type="submit" class="favorite-button
+                           
+                           favorite-button_offset
+                           HH-Favorite-Button" data-qa="favorites-add" data-action="add"> </button> 
+       </form> 
+      </div> <a class="vacancy-short-link" href="https://m.hh.ru/vacancy/19002528?from=SIMILAR_QUERY" data-qa="vacancy-link"></a> 
+      <div class="vacancy-short__name" data-qa="vacancy-name">
+        Ведущий Java разработчик 
+      </div> <span class="vacancy-short__city">Санкт-Петербург</span>
+      <div class="vacancy-short__company">
+        Центр речевых технологий&nbsp;
+       <span class="bloko-icon bloko-icon_done bloko-icon_initial-action"></span>
+      </div> 
+      <div class="vacancy-short__metros"> 
+       <span class="vacancy-short__metro"> <span class="bloko-metro-pin" style="background: #0078C9"></span>Фрунзенская</span>
+      </div> 
+      <div class="vacancy-short-footer"> 
+       <div class="vacancy-short-footer-item"> 
+        <div class="vacancy-short__pubdate" data-qa="vacancy-pubdate">
+          сегодня 
+        </div> 
+       </div> 
+       <div class="vacancy-short-footer-item"> 
+        <a class="vacancy-short-footer__button-wrapper" href="/vacancy_response?vacancy_id=19002528"> Откликнуться </a> 
+       </div> 
+      </div></li> 
+    </ul> 
+    <div class="vacancy-passage vacancy-passage_shrinked"> 
+     <a class="vacancy-passage__link" href="/vacancies?vacancy_id=22084598"> Показать все похожие вакансии </a> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="footer"> 
+   <div class="footer__column"> 
+    <h3 class="footer__header">Приложения</h3> 
+    <a href="https://redirect.appmet
