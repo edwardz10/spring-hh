@@ -9,7 +9,8 @@
     <form action="#" th:action="@{/search}" th:object="${search}" method="post">
     	<p>Keyword: <input type="text" th:field="*{keyword}" /></p>
         <p>Salary: <input type="text" th:field="*{salary}" /></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+        <p>Keyword limit: <input type="text" th:field="*{keywordLimit}" /></p>
+        <p><input type="submit" value="Submit" /></p>
     </form>
 </body>
 </html>

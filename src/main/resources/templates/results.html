@@ -5,10 +5,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-	<h1>Results</h1>
+	<h2>Top Keywords:</h2>
+	<table>
+		<thead th:each="topKeyword : ${topKeywords}">
+			<tr th:text="${topKeyword} + '       '"></tr>
+		</thead>
+	</table>
+	<h2>Vacancies:</h2>
 	<table>
 		<thead>
 			<tr>
+				<td>Id</td>
 				<td>Position</td>
 				<td>Company</td>
 				<td>Salary</td>
@@ -17,9 +24,14 @@
 		</thead>
 		<tbody>
 			<tr th:each="vacancy : ${vacancies}">
+				<td>
+					<a th:href="${vacancy.url}" target="_blank">
+						<span th:text="${vacancy.id}" />
+					</a>
+				</td>
 				<td th:text="${vacancy.position}"></td>
 				<td th:text="${vacancy.company}"></td>
-				<td th:text="${vacancy.salary}"></td>
+				<td th:text="${vacancy.mediumSalary}"></td>
 				<td th:text="${vacancy.keywords}"></td>
 			</tr>
 		</tbody>

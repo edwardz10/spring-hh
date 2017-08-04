@@ -1,9 +1,8 @@
 package hello.services;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import entities.SearchParameters;
-import entities.Vacancy;
+import hello.entities.SearchParameters;
+import hello.entities.Vacancy;
 
 @Service
 public class VacanciesSearchService {
@@ -27,15 +26,20 @@ public class VacanciesSearchService {
 
 	private final UrlBuilderService urlBuilder;
 	private final ParserService parserService;
+	private final StatisticsService statisticService;
 
 	private RestTemplate restTemplate;
 	private HttpHeaders headers;
 	private Map<String, String> restParams;
+
+	private List<String> omittedKeywords;
 	
 	@Autowired
-	public VacanciesSearchService(UrlBuilderService urlBuilder, ParserService parserService) {
+	public VacanciesSearchService(UrlBuilderService urlBuilder, ParserService parserService,
+			StatisticsService statisticService) {
 		this.urlBuilder = urlBuilder;
 		this.parserService = parserService;
+		this.statisticService = statisticService;
 	}
 
 	@PostConstruct
@@ -44,30 +48,39 @@ public class VacanciesSearchService {
 		headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		restParams = new LinkedHashMap<>();
+		omittedKeywords = new LinkedList<>();
 	}
 	
 	public List<Vacancy> findVacancies(SearchParameters searchParams) {
 		List<Vacancy> vacancies = new ArrayList<>();
-		String vacanciesResponse = restTemplate.getForObject(urlBuilder.getVacanciesUrl(searchParams), String.class, restParams);
+		String getVacanciesUrl = urlBuilder.getVacanciesUrl(searchParams);
+		LOG.info("Get vacancies URL: " + getVacanciesUrl);
+		String vacanciesResponse = restTemplate.getForObject(getVacanciesUrl, String.class, restParams);
 
 		List<Long> vacancyIds = parserService.getVacancyIds(vacanciesResponse);
 		LOG.info("Vacancy ids: " + vacancyIds);
 
 		for (Long vacancyId : vacancyIds) {
-			String vacancyResponse = restTemplate.getForObject(urlBuilder.getVacancyUrl(vacancyId), String.class, restParams);
-			Vacancy v = parserService.getVacancy(vacancyResponse);
+			String url = urlBuilder.getVacancyUrl(vacancyId);
+			LOG.info("Vacancy url: " + url);
+			String vacancyResponse = restTemplate.getForObject(url, String.class, restParams);
+			Vacancy v = parserService.getVacancy(vacancyId, url, vacancyResponse);
 
-			if (v.getSalary() != "n/a") {
-				vacancies.add(v);	
-			}
+//			if (v.getSalary() != "n/a") {
+				vacancies.add(v);
+
+				for (String keyword : v.getKeywordSet()) {
+					if (!omittedKeywords.contains(keyword)) {
+						statisticService.register(v.getId(), keyword);
+					}
+				}
+//			}
 		}
 
-		Collections.sort(vacancies, new Comparator<Vacancy>() {
-			public int compare(Vacancy v1,Vacancy v2) {
-				return (v1.getSalary().compareTo(v2.getSalary()));
-          }});
-		
 		return vacancies;
 	}
 
+	public void addOmittedKeyword(String keyword) {
+		omittedKeywords.add(keyword);
+	}
 }

@@ -1,6 +1,9 @@
 package hello.controllers;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import entities.SearchParameters;
-import entities.Vacancy;
+import hello.entities.SearchParameters;
+import hello.entities.Vacancy;
+import hello.services.StatisticsService;
+import hello.services.UtilService;
 import hello.services.VacanciesSearchService;
 
 @Controller
@@ -21,10 +26,15 @@ public class VacancyController {
 	private static final Logger LOG = LoggerFactory.getLogger(VacancyController.class);
 
 	private final VacanciesSearchService searchService;
+	private final StatisticsService statisticsService;
+	private final UtilService utilService;
 	
 	@Autowired
-	public VacancyController(VacanciesSearchService searchService) {
+	public VacancyController(VacanciesSearchService searchService, StatisticsService statisticsService,
+			UtilService utilService) {
 		this.searchService = searchService;
+		this.statisticsService = statisticsService;
+		this.utilService = utilService;
 	}
 	
 	@RequestMapping(value="/search", method=RequestMethod.GET)
@@ -37,11 +47,25 @@ public class VacancyController {
     @RequestMapping(value="/search", method=RequestMethod.POST)
     public String searchSubmit(@ModelAttribute SearchParameters searchParams, Model model) {
         LOG.info("search params: keyword=" + searchParams.getKeyword() + ", salary=" + searchParams.getSalary());
+        searchService.addOmittedKeyword(searchParams.getKeyword());
         List<Vacancy> vacancies = searchService.findVacancies(searchParams);
+
+        Collections.sort(vacancies, new Comparator<Vacancy>() {
+
+			@Override
+			public int compare(Vacancy o1, Vacancy o2) {
+				return o2.getMediumSalary().compareTo(o1.getMediumSalary());
+			}
+		});
         
         LOG.info("Found " + vacancies.size() + " vacancies");
+
+        Map<String, Integer> topKeywords = statisticsService.getTopKeywords(searchParams.getKeywordLimit());
+        LOG.info("top keywords: " + topKeywords);
         
-        model.addAttribute("vacancies", vacancies);
+        model.addAttribute("vacancies", vacancies)
+        	.addAttribute("topKeywords", topKeywords.keySet());
+
         return "results";
     }
 	
