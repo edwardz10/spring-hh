@@ -25,7 +25,7 @@ public class KeywordsAnalizerService {
 			"Java", "Javascript", "Spring", "Hybernate", "Android", "Python",
 			"Perl", "google guice", "Ruby", "Haskell", "TeamCity", "Github", "git",
 			"Scala", "Eclipse", "Groovy", "Kotlin", "Tomcat", "NoSQL", "No-SQL",
-			"Spring", "Hibernate"
+			"Spring", "Hibernate", "Kafka", "Hadoop", "Cassandra"
 	}; 
 
 	@PostConstruct
@@ -70,7 +70,6 @@ public class KeywordsAnalizerService {
 					|| (word.matches("[a-zA-Z]+") 
 						&& word.toUpperCase().equals(word))) {
 					keywordsSet.add(word);
-					LOG.info("AAAAAA! FOUND KEYWORD1111111: " + word);
 				}
 			}
 			

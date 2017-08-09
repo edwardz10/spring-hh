@@ -2,7 +2,9 @@ package hello.services;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jsoup.Jsoup;
@@ -13,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import hello.entities.Vacancy;
 
@@ -107,9 +110,29 @@ public class ParserService {
 	}
 
 	protected String getSalary(Document vacancyDoc) {
-		Element salarySpan = vacancyDoc.select("span[data-qa=vacancy-salary").first();
-
+		Element salaryDiv = vacancyDoc.select("div[class=vacancy__salary").first();
+		Element salarySpan = salaryDiv.select("span[data-qa=vacancy-salary").first();
+		
 		return salarySpan == null ? "n/a" : salarySpan.text().trim(); 
 	}
 
+	public static void main(String[] args) {
+		RestTemplate restTemplate = new RestTemplate();
+		Map<String, String> restParams = new LinkedHashMap<String, String>();
+		String url = "https://spb.hh.ru/vacancy/22020333?query=Java";
+//		String url = "https://spb.hh.ru/vacancy/22284505?query=Java";
+			
+		String vacancyResponse = restTemplate.getForObject(url, String.class, restParams);
+//		System.out.println(vacancyResponse);
+
+		Document doc = Jsoup.parse(vacancyResponse);
+		Element salaryDiv = doc.select("div[class=vacancy__salary").first();
+
+//		System.out.println("Parent element: " + salarySpan.parent());
+//		Element baseSalary = doc.select("meta[itemprop=salaryCurrency]").first();
+//		Element salaryCurrency = doc.select("meta[itemprop=baseSalary]").first();
+
+		System.out.println(vacancyResponse);
+
+	}
 }

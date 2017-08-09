@@ -6,11 +6,7 @@
 </head>
 <body>
 	<h2>Top Keywords:</h2>
-	<table>
-		<thead th:each="topKeyword : ${topKeywords}">
-			<tr th:text="${topKeyword} + '       '"></tr>
-		</thead>
-	</table>
+	<p><b><span th:text="${topKeywords}"></span></b></p>
 	<h2>Vacancies:</h2>
 	<table>
 		<thead>
