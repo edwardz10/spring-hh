@@ -3,6 +3,7 @@ package hello.services;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,15 +34,15 @@ public class ParserService {
 		this.utilService = utilService;
 	}
 	
-	public List<Long> getVacancyIds(String vacanciesHtml) {
-		List<Long> vacancyIds = new ArrayList<>();
+	public Set<Long> getVacancyIds(String vacanciesHtml) {
+		Set<Long> vacancyIds = new LinkedHashSet<>();
 		Document doc = Jsoup.parse(vacanciesHtml);
 		Elements links = doc.select("a");
 		
 		for (Element link : links) {
 			String href = link.attr("href");
 			
-			if (href.contains("vacancy_id=")) {
+			if (href != null && href.contains("vacancy_id=")) {
 				vacancyIds.add(getVacancyId(href));	
 			}
 
@@ -119,20 +120,21 @@ public class ParserService {
 	public static void main(String[] args) {
 		RestTemplate restTemplate = new RestTemplate();
 		Map<String, String> restParams = new LinkedHashMap<String, String>();
-		String url = "https://spb.hh.ru/vacancy/22020333?query=Java";
+		String url = "https://spb.hh.ru/search/vacancy?text=Java&area=2&salary=200000&currency_code=RUR&experience=doesNotMatter&order_by=relevance&search_period=&items_on_page=200&no_magic=true";
 //		String url = "https://spb.hh.ru/vacancy/22284505?query=Java";
 			
 		String vacancyResponse = restTemplate.getForObject(url, String.class, restParams);
 //		System.out.println(vacancyResponse);
 
 		Document doc = Jsoup.parse(vacancyResponse);
-		Element salaryDiv = doc.select("div[class=vacancy__salary").first();
+//		Element salaryDiv = doc.select("div[class=vacancy__salary").first();
 
 //		System.out.println("Parent element: " + salarySpan.parent());
 //		Element baseSalary = doc.select("meta[itemprop=salaryCurrency]").first();
 //		Element salaryCurrency = doc.select("meta[itemprop=baseSalary]").first();
 
-		System.out.println(vacancyResponse);
+//		System.out.println(vacancyResponse);
+		System.out.println(doc.html());
 
 	}
 }

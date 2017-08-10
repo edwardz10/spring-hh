@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -53,11 +54,9 @@ public class VacanciesSearchService {
 	
 	public List<Vacancy> findVacancies(SearchParameters searchParams) {
 		List<Vacancy> vacancies = new ArrayList<>();
-		String getVacanciesUrl = urlBuilder.getVacanciesUrl(searchParams);
-		LOG.info("Get vacancies URL: " + getVacanciesUrl);
-		String vacanciesResponse = restTemplate.getForObject(getVacanciesUrl, String.class, restParams);
 
-		List<Long> vacancyIds = parserService.getVacancyIds(vacanciesResponse);
+		Set<Long> vacancyIds = getVacancyIds(searchParams); 
+				
 		LOG.info("Vacancy ids: " + vacancyIds);
 
 		for (Long vacancyId : vacancyIds) {
@@ -66,15 +65,13 @@ public class VacanciesSearchService {
 			String vacancyResponse = restTemplate.getForObject(url, String.class, restParams);
 			Vacancy v = parserService.getVacancy(vacancyId, url, vacancyResponse);
 
-//			if (v.getSalary() != "n/a") {
-				vacancies.add(v);
+			vacancies.add(v);
 
-				for (String keyword : v.getKeywordSet()) {
-					if (!omittedKeywords.contains(keyword)) {
-						statisticService.register(v.getId(), keyword);
-					}
+			for (String keyword : v.getKeywordSet()) {
+				if (!omittedKeywords.contains(keyword)) {
+					statisticService.register(v.getId(), keyword);
 				}
-//			}
+			}
 		}
 
 		return vacancies;
@@ -83,4 +80,31 @@ public class VacanciesSearchService {
 	public void addOmittedKeyword(String keyword) {
 		omittedKeywords.add(keyword);
 	}
+
+	private Set<Long> getVacancyIds(SearchParameters searchParams) {
+		String vacanciesUrl = urlBuilder.getVacanciesUrlTotal(searchParams);
+		Set<Long> vacancyIds = getVacancyIds(vacanciesUrl);
+		Set<Long> portion;
+
+		int pages = 20;
+
+		for (int page = 0; page < pages; page++) {
+			try {
+				portion = getVacancyIds(urlBuilder.getVacanciesUrlWithPage(searchParams, page + 1));
+				LOG.info("Vacancies on page " + page + ": " + portion);
+				vacancyIds.addAll(portion);
+			} catch (Exception e) {
+				break;
+			}
+		}
+		
+		return vacancyIds;
+	}
+
+	private Set<Long> getVacancyIds(String url) {
+		LOG.info("Get vacancies URL: " + url);
+		String vacanciesResponse = restTemplate.getForObject(url, String.class, restParams);
+		return parserService.getVacancyIds(vacanciesResponse);
+	}
+
 }

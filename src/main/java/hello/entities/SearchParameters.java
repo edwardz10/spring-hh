@@ -5,6 +5,7 @@ public class SearchParameters {
 	private String keyword;
 	private String salary;
 	private Integer keywordLimit;
+	private Integer itemsOnPage = 100;
 	
 	public String getKeyword() {
 		return keyword;
@@ -23,6 +24,16 @@ public class SearchParameters {
 	}
 	public void setKeywordLimit(Integer keywordLimit) {
 		this.keywordLimit = keywordLimit;
+	}
+	public Integer getItemsOnPage() {
+		if (itemsOnPage == null) {
+			itemsOnPage = 100;
+		}
+		
+		return itemsOnPage;
+	}
+	public void setItemsOnPage(Integer itemsOnPage) {
+		this.itemsOnPage = itemsOnPage;
 	}
 
 }

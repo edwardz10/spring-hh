@@ -27,16 +27,17 @@ public class UrlBuilderService {
 		vacancyUrls = new LinkedHashMap<>();
 	}
 	
-	public String getVacanciesUrl(SearchParameters searchParams) {
+	public String getVacanciesUrlTotal(SearchParameters searchParams) {
 		return basicUrl + "search/vacancy?text=" + searchParams.getKeyword()
 			+ "&area=2&salary=" + searchParams.getSalary() 
-			+ "&currency_code=RUR"
-//			+ "&only_with_salary=true"
-			+ "&experience=doesNotMatter"
-			+ "&order_by=relevance"
-			+ "&search_period="
-			+ "&items_on_page=100"
-			+ "&no_magic=true";
+			+ "&items_on_page=" + searchParams.getItemsOnPage();
+	}
+
+	public String getVacanciesUrlWithPage(SearchParameters searchParams, int page) {
+		return basicUrl + "search/vacancy?text=" + searchParams.getKeyword()
+			+ "&area=2&salary=" + searchParams.getSalary() 
+			+ "&items_on_page=" + searchParams.getItemsOnPage()
+			+ "&page=" + page;
 	}
 
 	public String getVacancyUrl(long vacancyId) {
