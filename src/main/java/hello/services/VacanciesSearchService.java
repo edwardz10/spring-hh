@@ -57,7 +57,9 @@ public class VacanciesSearchService {
 
 		Set<Long> vacancyIds = getVacancyIds(searchParams); 
 				
-		LOG.info("Vacancy ids: " + vacancyIds);
+		LOG.info("Vacancy ids: " + vacancyIds
+				+ ", using search parameters: " + searchParams
+				+ ", in total: " + vacancyIds.size());
 
 		for (Long vacancyId : vacancyIds) {
 			String url = urlBuilder.getVacancyUrl(vacancyId);

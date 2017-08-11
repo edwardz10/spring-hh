@@ -1,25 +1,71 @@
 package hello.services;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.json.GsonJsonParser;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.google.gson.internal.LinkedTreeMap;
 
 @Service
 public class UtilService {
 
+	private static final Logger LOG = LoggerFactory.getLogger(UtilService.class);
+
+	private static String USD_RATES_URL = "http://api.fixer.io/latest?base=";
+	
 	@Value("${usdrus}")
 	private String usdRus;
+	
+	@Value("${eurrus}")
+	private String eurRus;
 
-	private Long usdExchangeRus;
+	private Double usdExchangeRus;
+	private Double eurExchangeRus;
+
+	private RestTemplate restTemplate;
+	private HttpHeaders headers;
+	private Map<String, String> restParams;
 
 	@PostConstruct
 	public void initialize() {
-		usdExchangeRus = Long.valueOf(usdRus);
+		try {
+			restTemplate = new RestTemplate();
+			headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			restParams = new LinkedHashMap<>();
+	
+			usdExchangeRus = getRubCurrencyExchange("USD");
+			eurExchangeRus = getRubCurrencyExchange("EUR");
+		} catch (Exception e) {
+			LOG.warn("Failed to get currency exchange via " + USD_RATES_URL + ": " + e.getMessage());
+			usdExchangeRus = Double.valueOf(usdRus);
+			eurExchangeRus = Double.valueOf(eurRus);
+		} 
+
+		LOG.info("USD-RUB currency exchange: " + usdExchangeRus);
 	}
 
+	private Double getRubCurrencyExchange(String currency) throws Exception {
+		String usdRates = restTemplate.getForObject(USD_RATES_URL + currency, String.class, restParams);
+		GsonJsonParser parser = new GsonJsonParser();
+		Map<String, Object> values = parser.parseMap(usdRates);
+
+		LinkedTreeMap<String, Object> rates = (LinkedTreeMap<String, Object>)values.get("rates");
+		
+		return (Double)rates.get("RUB");
+	}
+	
 	public String stringSetToString(Set<String> stringSet) {
 		StringBuilder keywords = new StringBuilder();
 
@@ -68,8 +114,11 @@ public class UtilService {
 
 			if (salary.endsWith("USD")
 					|| salary.endsWith("$")) {
-				parsedSalary *= usdExchangeRus;
+				parsedSalary = new Long(Math.round(parsedSalary * usdExchangeRus));
+			} else if (salary.endsWith("EUR")) {
+				parsedSalary = new Long(Math.round(parsedSalary * eurExchangeRus));
 			}
+			
 
 		}
 
@@ -92,38 +141,19 @@ public class UtilService {
 	}
 	
 	public static void main(String[] args) {
-//		String num,num1,num2;
-//		String str = "150 000—250 000 руб.";
-//		Long avgSalary = 0L;
-//		
-//		if (containsMinMax(str)) {
-//			String str1 = "" , str2 = "";
-//
-//			int index = str.indexOf("—");
-//
-//			if (index != -1) {
-//				str1 = str.substring(0, index);
-//				str2 = str.substring(index + 1);
-//			} else {
-//				index = str.indexOf("-");
-//				
-//				if (index != -1) {
-//					str1 = str.substring(0, index);
-//					str2 = str.substring(index + 1);
-//				}
-//			}
-//
-//			if (!str1.isEmpty()) {
-//				avgSalary = getAverage(toLong(str1), toLong(str2));
-//			}
-//		} else {
-//			avgSalary = toLong(str);
-//		}
-//
-//		if (str.endsWith("USD")) {
-//			avgSalary *= 60;
-//		}
-//
-//		System.out.println("Average: " + avgSalary);
+		String USD_RATES_URL = "http://api.fixer.io/latest?base=USD";
+		
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		Map<String, String> restParams = new LinkedHashMap<>();
+
+		String usdRates = restTemplate.getForObject(USD_RATES_URL, String.class, restParams);
+		GsonJsonParser parser = new GsonJsonParser();
+		Map<String, Object> values = parser.parseMap(usdRates);
+
+		LinkedTreeMap<String, Object> rates = (LinkedTreeMap<String, Object>)values.get("rates");
+//		Object usd = rates.get("USD");
+//		LOG.info("usd: " + usd + ", class: " + usd.getClass());
 	}
 }
