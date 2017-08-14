@@ -71,9 +71,12 @@ public class VacanciesSearchService {
 
 		for (Iterator<Vacancy> it = vacanciesFromDB.iterator(); it.hasNext();) {
 			v = it.next();
-			vacancyIdsDbMap.put(v.getId(), true);
-			vacancies.add(v);
-			LOG.info("Fetched vacancy with id=" + v.getId() + " from the DB...");
+
+			if (vacancyIds.contains(v.getId())) {
+				vacancyIdsDbMap.put(v.getId(), true);
+				vacancies.add(v);
+				LOG.info("Fetched vacancy with id=" + v.getId() + " from the DB...");
+			}
 		}
 		
 		for (Long vacancyId : vacancyIds) {

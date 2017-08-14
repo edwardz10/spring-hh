@@ -68,7 +68,8 @@ public class KeywordsAnalizerService {
 			for (String word : words) {
 				if (RESERVED_KEYWORDS_MAP.get(word) != null
 					|| (word.matches("[a-zA-Z]+") 
-						&& word.toUpperCase().equals(word))) {
+						&& word.toUpperCase().equals(word)
+						&& word.length() > 1)) {
 					keywordsSet.add(word);
 				}
 			}
