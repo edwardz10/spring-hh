@@ -1,6 +1,8 @@
 package hello.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +30,8 @@ public class VacanciesSearchService {
 	private final UrlBuilderService urlBuilder;
 	private final ParserService parserService;
 	private final StatisticsService statisticService;
-
+	private final VacanciesRepository vacanciesRepository;
+	
 	private RestTemplate restTemplate;
 	private HttpHeaders headers;
 	private Map<String, String> restParams;
@@ -37,10 +40,11 @@ public class VacanciesSearchService {
 	
 	@Autowired
 	public VacanciesSearchService(UrlBuilderService urlBuilder, ParserService parserService,
-			StatisticsService statisticService) {
+			StatisticsService statisticService, VacanciesRepository vacanciesRepository) {
 		this.urlBuilder = urlBuilder;
 		this.parserService = parserService;
 		this.statisticService = statisticService;
+		this.vacanciesRepository = vacanciesRepository;
 	}
 
 	@PostConstruct
@@ -53,29 +57,37 @@ public class VacanciesSearchService {
 	}
 	
 	public List<Vacancy> findVacancies(SearchParameters searchParams) {
+		Vacancy v = null;
+		String url, vacancyResponse = null;
 		List<Vacancy> vacancies = new ArrayList<>();
-
+		Map<Long, Boolean> vacancyIdsDbMap= new HashMap<>();
+		Iterable<Vacancy> vacanciesFromDB = vacanciesRepository.findAll();
+		
 		Set<Long> vacancyIds = getVacancyIds(searchParams); 
 				
 		LOG.info("Vacancy ids: " + vacancyIds
 				+ ", using search parameters: " + searchParams
 				+ ", in total: " + vacancyIds.size());
 
-		for (Long vacancyId : vacancyIds) {
-			String url = urlBuilder.getVacancyUrl(vacancyId);
-			LOG.info("Vacancy url: " + url);
-			String vacancyResponse = restTemplate.getForObject(url, String.class, restParams);
-			Vacancy v = parserService.getVacancy(vacancyId, url, vacancyResponse);
-
+		for (Iterator<Vacancy> it = vacanciesFromDB.iterator(); it.hasNext();) {
+			v = it.next();
+			vacancyIdsDbMap.put(v.getId(), true);
 			vacancies.add(v);
-
-			for (String keyword : v.getKeywordSet()) {
-				if (!omittedKeywords.contains(keyword)) {
-					statisticService.register(v.getId(), keyword);
-				}
+			LOG.info("Fetched vacancy with id=" + v.getId() + " from the DB...");
+		}
+		
+		for (Long vacancyId : vacancyIds) {
+			if (vacancyIdsDbMap.get(vacancyId) == null) {
+				url = urlBuilder.getVacancyUrl(vacancyId);
+				LOG.info("Fetch vacancy with id=" + v.getId() + " from a REST request...");
+				
+				vacancyResponse = restTemplate.getForObject(url, String.class, restParams);
+				v = parserService.getVacancy(vacancyId, url, vacancyResponse);
+				vacanciesRepository.save(v);
+				vacancies.add(v);
 			}
 		}
-
+		
 		return vacancies;
 	}
 

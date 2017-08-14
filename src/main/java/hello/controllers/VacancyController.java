@@ -64,7 +64,7 @@ public class VacancyController {
         LOG.info("top keywords: " + topKeywords);
         
         model.addAttribute("vacancies", vacancies)
-        	.addAttribute("topKeywords", utilService.stringSetToString(topKeywords.keySet()));
+        	.addAttribute("topKeywords", topKeywords.keySet());
 
         return "results";
     }

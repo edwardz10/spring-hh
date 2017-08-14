@@ -65,11 +65,14 @@ public class ParserService {
 								url, 
 								position, 
 								company, 
-								salary, 
+//								salary, 
 								utilService.parseSalary(salary), 
-								keywordSet, 
+//								keywordSet, 
 								utilService.stringSetToString(keywordSet));
 
+//		v.setSalary(salary);
+//		v.setKeywordSet(keywordSet);
+		
 		LOG.info("Found vacancy: " + v);
 		
 		return v;

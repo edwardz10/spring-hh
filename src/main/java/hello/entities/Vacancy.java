@@ -1,27 +1,49 @@
 package hello.entities;
 
-import java.util.Set;
+import java.io.Serializable;
 
-public class Vacancy {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity(name="vacancies")
+public class Vacancy implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name="id")
 	private Long id;
+
+	@Column(name="url")
 	private String url;
+
+	@Column(name="position")
 	private String position;
+
+	@Column(name="company")
 	private String company;
-	private String salary;
+
+//	private String salary;
+
+	@Column(name="medium_salary")
 	private Long mediumSalary;
-	private Set<String> keywordSet;
+
+//	private Set<String> keywordSet;
+
+	@Column(name="keywords")
 	private String keywords;
 
 	public Vacancy() {}
 	
-	public Vacancy(Long id, String url, String position, String company, String salary, Long mediumSalary, Set<String> keywordSet, String keywords) {
+	public Vacancy(Long id, String url, String position, String company, /* String salary, */ Long mediumSalary, /* Set<String> keywordSet, */ String keywords) {
 		this.id = id;
 		this.url = url;
 		this.position = position;
 		this.company = company;
-		this.salary = salary;
+//		this.salary = salary;
 		this.mediumSalary = mediumSalary;
-		this.keywordSet = keywordSet;
+//		this.keywordSet = keywordSet;
 		this.keywords = keywords;
 	}
 
@@ -53,12 +75,12 @@ public class Vacancy {
 	public void setCompany(String company) {
 		this.company = company;
 	}
-	public String getSalary() {
-		return salary;
-	}
-	public void setSalary(String salary) {
-		this.salary = salary;
-	}
+//	public String getSalary() {
+//		return salary;
+//	}
+//	public void setSalary(String salary) {
+//		this.salary = salary;
+//	}
 
 	public Long getMediumSalary() {
 		return mediumSalary;
@@ -68,13 +90,13 @@ public class Vacancy {
 		this.mediumSalary = mediumSalary;
 	}
 
-	public Set<String> getKeywordSet() {
-		return keywordSet;
-	}
-
-	public void setKeywordSet(Set<String> keywordSet) {
-		this.keywordSet = keywordSet;
-	}
+//	public Set<String> getKeywordSet() {
+//		return keywordSet;
+//	}
+//
+//	public void setKeywordSet(Set<String> keywordSet) {
+//		this.keywordSet = keywordSet;
+//	}
 
 	public String getKeywords() {
 		return keywords;
@@ -88,7 +110,7 @@ public class Vacancy {
 		return "id=" + id
 				+ ", position=" + position
 				+ ", company=" + company
-				+ ", salary=" + salary
+				+ ", salary=" + mediumSalary
 				+ ", mediumSalary=" + mediumSalary
 				+ ", keywords=" + keywords;
 	}

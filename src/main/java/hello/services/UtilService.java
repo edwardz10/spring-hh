@@ -37,9 +37,12 @@ public class UtilService {
 	private HttpHeaders headers;
 	private Map<String, String> restParams;
 
+	private GsonJsonParser parser;
+	
 	@PostConstruct
 	public void initialize() {
 		try {
+			parser = new GsonJsonParser();
 			restTemplate = new RestTemplate();
 			headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
@@ -58,10 +61,7 @@ public class UtilService {
 
 	private Double getRubCurrencyExchange(String currency) throws Exception {
 		String usdRates = restTemplate.getForObject(USD_RATES_URL + currency, String.class, restParams);
-		GsonJsonParser parser = new GsonJsonParser();
-		Map<String, Object> values = parser.parseMap(usdRates);
-
-		LinkedTreeMap<String, Object> rates = (LinkedTreeMap<String, Object>)values.get("rates");
+		LinkedTreeMap<String, Object> rates = (LinkedTreeMap<String, Object>)parser.parseMap(usdRates).get("rates");
 		
 		return (Double)rates.get("RUB");
 	}
