@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 import hello.entities.SearchParameters;
 import hello.entities.Vacancy;
+import hello.services.repositories.VacanciesRepository;
 
 @Service
 public class VacanciesSearchService {
@@ -29,7 +30,6 @@ public class VacanciesSearchService {
 
 	private final UrlBuilderService urlBuilder;
 	private final ParserService parserService;
-	private final StatisticsService statisticService;
 	private final VacanciesRepository vacanciesRepository;
 	
 	private RestTemplate restTemplate;
@@ -40,10 +40,9 @@ public class VacanciesSearchService {
 	
 	@Autowired
 	public VacanciesSearchService(UrlBuilderService urlBuilder, ParserService parserService,
-			StatisticsService statisticService, VacanciesRepository vacanciesRepository) {
+			VacanciesRepository vacanciesRepository) {
 		this.urlBuilder = urlBuilder;
 		this.parserService = parserService;
-		this.statisticService = statisticService;
 		this.vacanciesRepository = vacanciesRepository;
 	}
 
@@ -82,7 +81,7 @@ public class VacanciesSearchService {
 		for (Long vacancyId : vacancyIds) {
 			if (vacancyIdsDbMap.get(vacancyId) == null) {
 				url = urlBuilder.getVacancyUrl(vacancyId);
-				LOG.info("Fetch vacancy with id=" + v.getId() + " from a REST request...");
+				LOG.info("Fetch vacancy with id=" + vacancyId + " from a REST request...");
 				
 				vacancyResponse = restTemplate.getForObject(url, String.class, restParams);
 				v = parserService.getVacancy(vacancyId, url, vacancyResponse);
@@ -123,5 +122,4 @@ public class VacanciesSearchService {
 		String vacanciesResponse = restTemplate.getForObject(url, String.class, restParams);
 		return parserService.getVacancyIds(vacanciesResponse);
 	}
-
 }

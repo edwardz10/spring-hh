@@ -24,26 +24,20 @@ public class Vacancy implements Serializable {
 	@Column(name="company")
 	private String company;
 
-//	private String salary;
-
 	@Column(name="medium_salary")
 	private Long mediumSalary;
-
-//	private Set<String> keywordSet;
 
 	@Column(name="keywords")
 	private String keywords;
 
 	public Vacancy() {}
 	
-	public Vacancy(Long id, String url, String position, String company, /* String salary, */ Long mediumSalary, /* Set<String> keywordSet, */ String keywords) {
+	public Vacancy(Long id, String url, String position, String company, Long mediumSalary, String keywords) {
 		this.id = id;
 		this.url = url;
 		this.position = position;
 		this.company = company;
-//		this.salary = salary;
 		this.mediumSalary = mediumSalary;
-//		this.keywordSet = keywordSet;
 		this.keywords = keywords;
 	}
 
@@ -75,12 +69,6 @@ public class Vacancy implements Serializable {
 	public void setCompany(String company) {
 		this.company = company;
 	}
-//	public String getSalary() {
-//		return salary;
-//	}
-//	public void setSalary(String salary) {
-//		this.salary = salary;
-//	}
 
 	public Long getMediumSalary() {
 		return mediumSalary;
@@ -89,14 +77,6 @@ public class Vacancy implements Serializable {
 	public void setMediumSalary(Long mediumSalary) {
 		this.mediumSalary = mediumSalary;
 	}
-
-//	public Set<String> getKeywordSet() {
-//		return keywordSet;
-//	}
-//
-//	public void setKeywordSet(Set<String> keywordSet) {
-//		this.keywordSet = keywordSet;
-//	}
 
 	public String getKeywords() {
 		return keywords;

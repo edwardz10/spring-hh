@@ -25,11 +25,14 @@ public class ParserService {
 
 	private final KeywordsAnalizerService analizerService;
 	private final UtilService utilService;
+	private final StatisticsService statisticsService;
 
 	@Autowired
-	public ParserService(KeywordsAnalizerService analizerService, UtilService utilService) {
+	public ParserService(KeywordsAnalizerService analizerService, UtilService utilService,
+			StatisticsService statisticsService) {
 		this.analizerService = analizerService;
 		this.utilService = utilService;
+		this.statisticsService = statisticsService;
 	}
 	
 	public Set<Long> getVacancyIds(String vacanciesHtml) {
@@ -56,6 +59,8 @@ public class ParserService {
 		if (keywordSet.isEmpty()) {
 			keywordSet = analizerService.getKeywordsHypothetical(doc);
 		}
+
+		registerKeywords(vacancyId, keywordSet);
 		
 		String position = getPosition(doc);
 		String company = getCompany(doc);
@@ -118,6 +123,12 @@ public class ParserService {
 		return salarySpan == null ? "n/a" : salarySpan.text().trim(); 
 	}
 
+	protected void registerKeywords(Long vacancyId, Set<String> keywordSet) {
+		for (String k : keywordSet) {
+			statisticsService.register(vacancyId, k);
+		}
+	}
+	
 	public static void main(String[] args) {
 		RestTemplate restTemplate = new RestTemplate();
 		Map<String, String> restParams = new LinkedHashMap<String, String>();

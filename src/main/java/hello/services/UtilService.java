@@ -1,6 +1,7 @@
 package hello.services;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.internal.LinkedTreeMap;
+
+import hello.entities.Keyword;
 
 @Service
 public class UtilService {
@@ -84,6 +87,24 @@ public class UtilService {
 		return keywords.toString().trim();
 	}
 
+	public String keywordsToString(List<Keyword> kk) {
+		StringBuilder keywords = new StringBuilder();
+
+		boolean first = true;
+		
+		for (Keyword k : kk) {
+			if (!first) {
+				keywords.append(", ");
+			} else {
+				first = false;
+			}
+	
+			keywords.append(k.getKeyword());
+		}
+
+		return keywords.toString().trim();
+	}
+	
 	public Long parseSalary(String salary) {
 		Long parsedSalary = 0L;
 
