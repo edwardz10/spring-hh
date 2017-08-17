@@ -22,12 +22,12 @@ public class StatisticsService {
 		this.keywordRepository = keywordRepository;
 	}
 	
-	public void register(Long vacancyId, String keyword) {
+	public void register(String searchKey, String keyword) {
 		try {
-			Keyword k = keywordRepository.findOne(keyword);
+			Keyword k = keywordRepository.getKeyword(searchKey, keyword); 
 
 			if (k == null) {
-				k = new Keyword(keyword);
+				k = new Keyword(searchKey, keyword);
 				keywordRepository.save(k);
 			} else {
 				k.increment();
@@ -35,11 +35,14 @@ public class StatisticsService {
 			}
 			
 		} catch (Exception e) {
-			LOG.warn("Failed to add keyword '" + keyword + " to statistics: " + e, e);
+			LOG.warn("Failed to add keyword '" + keyword + "' to statistics: " + e, e);
 		}
 	}
 
-	public List<Keyword> getTopKeywords(int limit) {
-		return keywordRepository.getSortedKeywords().subList(0, limit);
+	public List<Keyword> getTopKeywords(String searchKey, int limit) {
+		List<Keyword> topKeywords = keywordRepository.getSortedKeywords(searchKey);
+
+		return (topKeywords.size() > limit) ? topKeywords.subList(0, limit) : topKeywords;
+//		return keywordRepository.getSortedKeywords().subList(0, limit);
 	}
 }

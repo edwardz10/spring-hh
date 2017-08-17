@@ -16,7 +16,9 @@ CREATE TABLE `vacancies` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7998 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `keywords` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `searchkey` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `keyword` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
    `count` int(5) NOT NULL,
-  PRIMARY KEY (`keyword`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7998 DEFAULT CHARSET=latin1;

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity(name="keywords")
@@ -11,7 +13,14 @@ public class Keyword implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id")
+	private Long id;
+	
+	@Column(name="searchkey")
+	private String searchKey;
+
 	@Column(name="keyword")
 	private String keyword;
 
@@ -20,9 +29,26 @@ public class Keyword implements Serializable {
 
 	protected Keyword() {}
 
-	public Keyword(String keyword) {
+	public Keyword(String searchKey, String keyword) {
+		this.searchKey = searchKey;
 		this.keyword = keyword;
 		this.count = 1L;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getSearchKey() {
+		return searchKey;
+	}
+
+	public void setSearchKey(String searchKey) {
+		this.searchKey = searchKey;
 	}
 
 	public String getKeyword() {
@@ -46,7 +72,8 @@ public class Keyword implements Serializable {
 
 	@Override
 	public String toString() {
-		return "keyword=" + keyword
+		return "searchKey=" + searchKey
+				+ ", keyword=" + keyword
 				+ ", count=" + count;
 	}
 }

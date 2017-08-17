@@ -84,7 +84,7 @@ public class VacanciesSearchService {
 				LOG.info("Fetch vacancy with id=" + vacancyId + " from a REST request...");
 				
 				vacancyResponse = restTemplate.getForObject(url, String.class, restParams);
-				v = parserService.getVacancy(vacancyId, url, vacancyResponse);
+				v = parserService.getVacancy(vacancyId, url, vacancyResponse, searchParams.getKeyword());
 				vacanciesRepository.save(v);
 				vacancies.add(v);
 			}

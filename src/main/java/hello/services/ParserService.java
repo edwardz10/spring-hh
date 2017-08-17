@@ -52,7 +52,7 @@ public class ParserService {
 		return vacancyIds;
 	}
 
-	public Vacancy getVacancy(Long vacancyId, String url, String vacancyHtml) {
+	public Vacancy getVacancy(Long vacancyId, String url, String vacancyHtml, String searchKey) {
 		Document doc = Jsoup.parse(vacancyHtml);
 		Set<String> keywordSet = getKeywords(doc);
 
@@ -60,7 +60,7 @@ public class ParserService {
 			keywordSet = analizerService.getKeywordsHypothetical(doc);
 		}
 
-		registerKeywords(vacancyId, keywordSet);
+		registerKeywords(searchKey, keywordSet);
 		
 		String position = getPosition(doc);
 		String company = getCompany(doc);
@@ -123,9 +123,9 @@ public class ParserService {
 		return salarySpan == null ? "n/a" : salarySpan.text().trim(); 
 	}
 
-	protected void registerKeywords(Long vacancyId, Set<String> keywordSet) {
+	protected void registerKeywords(String searchKey, Set<String> keywordSet) {
 		for (String k : keywordSet) {
-			statisticsService.register(vacancyId, k);
+			statisticsService.register(searchKey, k);
 		}
 	}
 	

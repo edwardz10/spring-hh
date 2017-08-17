@@ -60,7 +60,7 @@ public class VacancyController {
         
         LOG.info("Found " + vacancies.size() + " vacancies");
 
-        List<Keyword> topKeywords = statisticsService.getTopKeywords(searchParams.getKeywordLimit());
+        List<Keyword> topKeywords = statisticsService.getTopKeywords(searchParams.getKeyword(), searchParams.getKeywordLimit());
         LOG.info("top keywords: " + topKeywords);
         
         model.addAttribute("vacancies", vacancies)
