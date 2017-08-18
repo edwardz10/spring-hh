@@ -53,6 +53,7 @@ public class ParserService {
 	}
 
 	public Vacancy getVacancy(Long vacancyId, String url, String vacancyHtml, String searchKey) {
+		Vacancy v = null;
 		Document doc = Jsoup.parse(vacancyHtml);
 		Set<String> keywordSet = getKeywords(doc);
 
@@ -60,25 +61,26 @@ public class ParserService {
 			keywordSet = analizerService.getKeywordsHypothetical(doc);
 		}
 
-		registerKeywords(searchKey, keywordSet);
+//		registerKeywordsForSearchKey(searchKey, keywordSet);
+		registerAllKeywords(keywordSet);
 		
 		String position = getPosition(doc);
 		String company = getCompany(doc);
 		String salary = getSalary(doc);
 
-		Vacancy v = new Vacancy(vacancyId, 
-								url, 
-								position, 
-								company, 
-//								salary, 
-								utilService.parseSalary(salary), 
-//								keywordSet, 
-								utilService.stringSetToString(keywordSet));
+		if (position != null
+			&& company != null
+			&& salary != null
+			) {
+			v = new Vacancy(vacancyId, 
+					url, 
+					position, 
+					company, 
+					utilService.parseSalary(salary), 
+					utilService.stringSetToString(keywordSet));
 
-//		v.setSalary(salary);
-//		v.setKeywordSet(keywordSet);
-		
-		LOG.info("Found vacancy: " + v);
+			LOG.info("Found vacancy: " + v);
+		}
 		
 		return v;
 	}
@@ -109,11 +111,17 @@ public class ParserService {
 	}
 
 	protected String getCompany(Document vacancyDoc) {
+		String company = null;
 		Element companyElement = vacancyDoc.select("div[class=navigate navigate_nopadding]").first();
-		String html = companyElement.html();
-		int index = html.indexOf("<div");
-		
-		return (index == -1) ? html.trim() : html.substring(0, index).trim();
+
+		if (companyElement != null) {
+			String html = companyElement.html();
+			int index = html.indexOf("<div");
+			
+			company = (index == -1) ? html.trim() : html.substring(0, index).trim();
+		}
+
+		return company;
 	}
 
 	protected String getSalary(Document vacancyDoc) {
@@ -123,9 +131,17 @@ public class ParserService {
 		return salarySpan == null ? "n/a" : salarySpan.text().trim(); 
 	}
 
-	protected void registerKeywords(String searchKey, Set<String> keywordSet) {
+	protected void registerKeywordsForSearchKey(String searchKey, Set<String> keywordSet) {
 		for (String k : keywordSet) {
 			statisticsService.register(searchKey, k);
+		}
+	}
+
+	protected void registerAllKeywords(Set<String> keywordSet) {
+		for (String i : keywordSet) {
+			for (String j : keywordSet) {
+				statisticsService.register(i, j);	
+			}
 		}
 	}
 	

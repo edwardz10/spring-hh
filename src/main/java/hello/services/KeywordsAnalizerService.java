@@ -23,9 +23,10 @@ public class KeywordsAnalizerService {
 	
 	private final String[] RESERVED_KEYWORDS = {
 			"Java", "Javascript", "Spring", "Hybernate", "Android", "Python",
-			"Perl", "google guice", "Ruby", "Haskell", "TeamCity", "Github", "git",
+			"Perl", "google guice", "Ruby", "Haskell", "TeamCity", "Github", "git", "Git",
 			"Scala", "Eclipse", "Groovy", "Kotlin", "Tomcat", "NoSQL", "No-SQL",
-			"Spring", "Hibernate", "Kafka", "Hadoop", "Cassandra"
+			"Spring", "Hibernate", "Kafka", "Hadoop", "Cassandra", "Linux", "SOAP", "REST",
+			"Docker", "CSS", "HTML", "MongoDB"
 	}; 
 
 	@PostConstruct

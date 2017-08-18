@@ -85,8 +85,11 @@ public class VacanciesSearchService {
 				
 				vacancyResponse = restTemplate.getForObject(url, String.class, restParams);
 				v = parserService.getVacancy(vacancyId, url, vacancyResponse, searchParams.getKeyword());
-				vacanciesRepository.save(v);
-				vacancies.add(v);
+
+				if (v != null) {
+					vacanciesRepository.save(v);
+					vacancies.add(v);
+				}
 			}
 		}
 		
