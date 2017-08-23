@@ -40,7 +40,7 @@ public class UrlBuilderService {
 			+ "&page=" + page;
 	}
 
-	public String getVacancyUrl(long vacancyId) {
+	public synchronized String getVacancyUrl(long vacancyId) {
 		String url = vacancyUrls.get(vacancyId);
 
 		if (url == null) {

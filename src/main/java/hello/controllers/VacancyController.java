@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import hello.entities.Keyword;
 import hello.entities.SearchParameters;
 import hello.entities.Vacancy;
+import hello.services.StaticUtils;
 import hello.services.StatisticsService;
-import hello.services.UtilService;
+import hello.services.CurrencyService;
 import hello.services.VacanciesSearchService;
 
 @Controller
@@ -27,11 +28,11 @@ public class VacancyController {
 
 	private final VacanciesSearchService searchService;
 	private final StatisticsService statisticsService;
-	private final UtilService utilService;
+	private final CurrencyService utilService;
 	
 	@Autowired
 	public VacancyController(VacanciesSearchService searchService, StatisticsService statisticsService,
-			UtilService utilService) {
+			CurrencyService utilService) {
 		this.searchService = searchService;
 		this.statisticsService = statisticsService;
 		this.utilService = utilService;
@@ -64,7 +65,7 @@ public class VacancyController {
         LOG.info("top keywords: " + topKeywords);
         
         model.addAttribute("vacancies", vacancies)
-        	.addAttribute("topKeywords", utilService.keywordsToString(topKeywords));
+        	.addAttribute("topKeywords", StaticUtils.keywordsToString(topKeywords));
 
         return "results";
     }

@@ -38,7 +38,7 @@ public class KeywordsAnalizerService {
 		}
 	}
 	
-	public Set<String> getKeywordsHypothetical(Document doc) {
+	public synchronized Set<String> getKeywordsHypothetical(Document doc) {
 		Set<String> keywordSet = getKeywordsFromDiv(doc, "div[class=vacancy__description usergenerate]");
 
 		keywordSet.addAll(getKeywordsFromDiv(doc, "div[class=b-vacancy-desc-wrapper]"));

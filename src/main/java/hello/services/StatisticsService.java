@@ -22,7 +22,7 @@ public class StatisticsService {
 		this.keywordRepository = keywordRepository;
 	}
 	
-	public void register(String searchKey, String keyword) {
+	public synchronized void register(String searchKey, String keyword) {
 		try {
 			Keyword k = keywordRepository.getKeyword(searchKey, keyword); 
 
@@ -35,7 +35,7 @@ public class StatisticsService {
 			}
 			
 		} catch (Exception e) {
-			LOG.warn("Failed to add keyword '" + keyword + "' to statistics: " + e, e);
+			LOG.warn("Failed to add keyword '" + keyword + "' for seachkey '" + searchKey + "' to statistics: " + e, e);
 		}
 	}
 
@@ -43,6 +43,5 @@ public class StatisticsService {
 		List<Keyword> topKeywords = keywordRepository.getSortedKeywords(searchKey);
 
 		return (topKeywords.size() > limit) ? topKeywords.subList(0, limit) : topKeywords;
-//		return keywordRepository.getSortedKeywords().subList(0, limit);
 	}
 }
