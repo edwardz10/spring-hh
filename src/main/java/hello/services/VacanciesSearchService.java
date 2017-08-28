@@ -1,5 +1,6 @@
 package hello.services;
 
+import java.util.Collections;
 import java.util.HashSet;
 //import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -107,7 +108,8 @@ public class VacanciesSearchService {
 			}
 
 			latch.countDown();
-			LOG.info(Thread.currentThread() + " No more vacancies in the queue.. exit");
+			LOG.info("DONE " + this.latch);
+//			LOG.info(Thread.currentThread() + " No more vacancies in the queue.. exit");
 		}
 
 		protected Vacancy getVacancy(Long vacancyId, String url, String vacancyHtml, String searchKey) {
