@@ -24,7 +24,6 @@ public class StaticUtils {
 
 	public static String stringSetToString(Set<String> stringSet) {
 		StringBuilder keywords = new StringBuilder();
-
 		boolean first = true;
 		
 		for (String k : stringSet) {

@@ -1,7 +1,5 @@
 package hello.controllers;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,7 +16,6 @@ import hello.entities.SearchParameters;
 import hello.entities.Vacancy;
 import hello.services.StaticUtils;
 import hello.services.StatisticsService;
-import hello.services.CurrencyService;
 import hello.services.VacanciesSearchService;
 
 @Controller
@@ -28,14 +25,11 @@ public class VacancyController {
 
 	private final VacanciesSearchService searchService;
 	private final StatisticsService statisticsService;
-	private final CurrencyService utilService;
 	
 	@Autowired
-	public VacancyController(VacanciesSearchService searchService, StatisticsService statisticsService,
-			CurrencyService utilService) {
+	public VacancyController(VacanciesSearchService searchService, StatisticsService statisticsService) {
 		this.searchService = searchService;
 		this.statisticsService = statisticsService;
-		this.utilService = utilService;
 	}
 	
 	@RequestMapping(value="/search", method=RequestMethod.GET)
@@ -51,13 +45,7 @@ public class VacancyController {
         searchService.addOmittedKeyword(searchParams.getKeyword());
         List<Vacancy> vacancies = searchService.findVacancies(searchParams);
 
-        Collections.sort(vacancies, new Comparator<Vacancy>() {
-
-			@Override
-			public int compare(Vacancy o1, Vacancy o2) {
-				return o2.getMediumSalary().compareTo(o1.getMediumSalary());
-			}
-		});
+        vacancies.sort((o1, o2) -> o2.getMediumSalary().compareTo(o1.getMediumSalary()));
         
         LOG.info("Found " + vacancies.size() + " vacancies");
 

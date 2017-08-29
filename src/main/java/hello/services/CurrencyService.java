@@ -56,6 +56,7 @@ public class CurrencyService {
 		} 
 
 		LOG.info("USD-RUB currency exchange: " + usdExchangeRus);
+		LOG.info("EUR-RUB currency exchange: " + eurExchangeRus);
 	}
 
 	public Double getUsdExchange() {

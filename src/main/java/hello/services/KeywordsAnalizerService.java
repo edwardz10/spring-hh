@@ -52,20 +52,26 @@ public class KeywordsAnalizerService {
 	}
 	
 	protected Set<String> getKeywordsFromElement(Element element) {
-		String[] words = null;
+//		String[] words = null;
 		Set<String> keywordsSet = new HashSet<>();
 
 		Elements liElements = element.select("li");
 
-		for (Element liElement : liElements) {
+		liElements.forEach(liElement -> {
 			Element pElement = liElement.select("p").first();
 
-			if (pElement != null) {
-				words = pElement.html().split(" ");
-			} else {
-				words = liElement.html().split(" ");
-			}
+			String[] words = (pElement != null)
+							? pElement.html().split(" ")
+							: liElement.html().split(" "); 
+			
+//			if (pElement != null) {
+//				words = pElement.html().split(" ");
+//			} else {
+//				words = liElement.html().split(" ");
+//			}
 
+//			words.for
+							
 			for (String word : words) {
 				if (RESERVED_KEYWORDS_MAP.get(word) != null
 					|| (word.matches("[a-zA-Z]+") 
@@ -75,7 +81,27 @@ public class KeywordsAnalizerService {
 				}
 			}
 			
-		}
+		});
+		
+//		for (Element liElement : liElements) {
+//			Element pElement = liElement.select("p").first();
+//
+//			if (pElement != null) {
+//				words = pElement.html().split(" ");
+//			} else {
+//				words = liElement.html().split(" ");
+//			}
+//
+//			for (String word : words) {
+//				if (RESERVED_KEYWORDS_MAP.get(word) != null
+//					|| (word.matches("[a-zA-Z]+") 
+//						&& word.toUpperCase().equals(word)
+//						&& word.length() > 1)) {
+//					keywordsSet.add(word);
+//				}
+//			}
+//			
+//		}
 		
 		return keywordsSet;
 	}

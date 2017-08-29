@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Handling Form Submission</title>
+    <title>Java Vacancies' Rating</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -27,7 +27,7 @@
 				</td>
 				<td th:text="${vacancy.position}"></td>
 				<td th:text="${vacancy.company}"></td>
-				<td th:text="${vacancy.mediumSalary}"></td>
+				<td th:text="${vacancy.mediumSalary} == 0 ? 'n/a' : ${vacancy.mediumSalary}"></td>
 				<td th:text="${vacancy.keywords}"></td>
 			</tr>
 		</tbody>

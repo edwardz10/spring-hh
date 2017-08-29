@@ -1,6 +1,5 @@
 package hello.services;
 
-import java.util.Collections;
 import java.util.HashSet;
 //import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -12,7 +11,7 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -44,7 +43,7 @@ public class VacanciesSearchService {
 	private final VacanciesRepository vacanciesRepository;
 	private final KeywordsAnalizerService analizerService;
 	private final StatisticsService statisticsService;
-	private final CurrencyService utilService;
+	private final CurrencyService currencyService;
 
 	private RestTemplate restTemplate;
 	private HttpHeaders headers;
@@ -146,13 +145,12 @@ public class VacanciesSearchService {
 
 		protected Set<String> getKeywords(Document vacancyDoc) {
 			Set<String> keywordsSet = new HashSet<>();
-
 			Elements keySkillsSpans = vacancyDoc.select("span[class=keyskill]");
 
 			if (!keySkillsSpans.isEmpty()) {
-				for (Element keySkillSpan : keySkillsSpans) {
-					keywordsSet.add(keySkillSpan.text());
-				}
+				keywordsSet = keySkillsSpans.stream()
+								.map(Element::text)
+								.collect(Collectors.toSet());
 			} else {
 				LOG.warn("Key skills are not present on the page!");
 			}
@@ -161,11 +159,7 @@ public class VacanciesSearchService {
 		}
 
 		protected void registerAllKeywords(Set<String> keywordSet) {
-			for (String i : keywordSet) {
-				for (String j : keywordSet) {
-					statisticsService.register(i, j);	
-				}
-			}
+			keywordSet.forEach(i -> keywordSet.forEach(j -> statisticsService.register(i, j)));
 		}
 
 		protected String getPosition(Document vacancyDoc) {
@@ -224,12 +218,10 @@ public class VacanciesSearchService {
 
 				if (salary.endsWith("USD")
 						|| salary.endsWith("$")) {
-					parsedSalary = new Long(Math.round(parsedSalary * utilService.getUsdExchange()));
+					parsedSalary = new Long(Math.round(parsedSalary * currencyService.getUsdExchange()));
 				} else if (salary.endsWith("EUR")) {
-					parsedSalary = new Long(Math.round(parsedSalary * utilService.getEuroExchange()));
+					parsedSalary = new Long(Math.round(parsedSalary * currencyService.getEuroExchange()));
 				}
-				
-
 			}
 
 			return parsedSalary;
@@ -244,7 +236,7 @@ public class VacanciesSearchService {
 		this.vacanciesRepository = vacanciesRepository;
 		this.analizerService = analizerService;
 		this.statisticsService = statisticsService;
-		this.utilService = utilService;
+		this.currencyService = utilService;
 	}
 
 	@PostConstruct
@@ -272,18 +264,19 @@ public class VacanciesSearchService {
 				+ ", using search parameters: " + searchParams
 				+ ", in total: " + vacancyIds.size());
 
-		for (Long vId : vacancyIds) {
-			Vacancy v = vacanciesRepository.findOne(vId);
-
-			if (v == null) {
-				vacanciesFromHH.push(vId);
-				LOG.info("Vacancy with id=" + vId + " must be fetched from hh.ru...");
-			} else {
-				vacancies.add(v);
-				LOG.info("Fetched vacancy with id=" + v.getId() + " from the DB...");
+		vacancyIds.forEach(vId -> {
+				Vacancy v = vacanciesRepository.findOne(vId);
+	
+				if (v == null) {
+					vacanciesFromHH.push(vId);
+					LOG.info("Vacancy with id=" + vId + " must be fetched from hh.ru...");
+				} else {
+					vacancies.add(v);
+					LOG.info("Fetched vacancy with id=" + v.getId() + " from the DB...");
+				}
 			}
-		}
-
+		);
+		
 		if (!vacanciesFromHH.isEmpty()) {
 			for (int i = 0; i < availableProcessors; i++) {
 				executorService.execute(new VacanciesFeeder(vacanciesFromHH, vacancies, searchParams, latch));
@@ -333,15 +326,14 @@ public class VacanciesSearchService {
 		Set<Long> vacancyIds = new LinkedHashSet<>();
 		Document doc = Jsoup.parse(vacanciesHtml);
 		Elements links = doc.select("a");
-		
-		for (Element link : links) {
+
+		links.forEach(link -> {
 			String href = link.attr("href");
 			
 			if (href != null && href.contains("vacancy_id=")) {
 				vacancyIds.add(Long.valueOf(href.split("=")[1]));	
 			}
-
-		}
+		});
 		
 		return vacancyIds;
 	}
