@@ -99,11 +99,13 @@ public class VacanciesSearchService {
 				vacancyResponse = restT.getForObject(url, String.class, restP);
 				v = getVacancy(vacancyId, url, vacancyResponse, searchParams.getKeyword());
 
-				synchronized (vacancies) {
-					vacancies.push(v);
+				if (v != null) {
+					synchronized (vacancies) {
+						vacancies.push(v);
+					}
+	
+					vacanciesRepository.save(v);
 				}
-
-				vacanciesRepository.save(v);
 			}
 
 			latch.countDown();
