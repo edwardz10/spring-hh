@@ -140,6 +140,11 @@ public class VacanciesSearchService {
 						StaticUtils.stringSetToString(keywordSet));
 
 				LOG.info(Thread.currentThread() + " Found vacancy: " + v);
+			} else {
+				LOG.info(Thread.currentThread() + " vacancy " + url + " is invalid:"
+						+ " position = " + position
+						+ " company = " + company
+						+ " salary = " + salary);
 			}
 			
 			return v;
