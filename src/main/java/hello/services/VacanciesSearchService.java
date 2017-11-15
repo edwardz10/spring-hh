@@ -97,7 +97,7 @@ public class VacanciesSearchService {
 				LOG.info(Thread.currentThread() + " Fetch vacancy with id=" + vacancyId + " from a REST request...");
 				
 				vacancyResponse = restT.getForObject(url, String.class, restP);
-				v = getVacancy(vacancyId, url, vacancyResponse, searchParams.getKeyword());
+				v = getVacancy(vacancyId, url, vacancyResponse);
 
 				if (v != null) {
 					synchronized (vacancies) {
@@ -113,7 +113,7 @@ public class VacanciesSearchService {
 //			LOG.info(Thread.currentThread() + " No more vacancies in the queue.. exit");
 		}
 
-		protected Vacancy getVacancy(Long vacancyId, String url, String vacancyHtml, String searchKey) {
+		protected Vacancy getVacancy(Long vacancyId, String url, String vacancyHtml) {
 			Vacancy v = null;
 			Document doc = Jsoup.parse(vacancyHtml);
 			Set<String> keywordSet = getKeywords(doc);
@@ -176,7 +176,7 @@ public class VacanciesSearchService {
 
 		protected String getCompany(Document vacancyDoc) {
 			String company = null;
-			Element companyElement = vacancyDoc.select("div[class=navigate navigate_nopadding]").first();
+			Element companyElement = vacancyDoc.select("div[class=navigate]").first();
 
 			if (companyElement != null) {
 				String html = companyElement.html();
@@ -345,4 +345,40 @@ public class VacanciesSearchService {
 		return vacancyIds;
 	}
 
+	public static void main(String[] args) {
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		Map<String, String> restParams = new LinkedHashMap<>();
+		String url = "https://spb.hh.ru/vacancy/23318016?query=Java";
+		Long vacancyId = 23318016L;
+		String position = "", company = "", salary = "";
+		
+		String vacancyResponse = restTemplate.getForObject(url, String.class, restParams);
+		System.out.println("Vacancy response: " + vacancyResponse);
+		
+		Document doc = Jsoup.parse(vacancyResponse);
+		
+		Element positionElement = doc.select("h1[class=vacancy__name]").first();
+		position = positionElement.text().trim();
+
+		Element companyElement = doc.select("div[class=navigate]").first();
+
+		if (companyElement != null) {
+			String html = companyElement.html();
+			int index = html.indexOf("<div");
+			
+			company = (index == -1) ? html.trim() : html.substring(0, index).trim();
+		}
+		
+		Element salaryDiv = doc.select("div[class=vacancy__salary").first();
+		Element salarySpan = salaryDiv.select("span[data-qa=vacancy-salary").first();
+			
+		salary = (salarySpan == null ? "n/a" : salarySpan.text().trim()); 
+		
+	
+		System.out.println("Position = " + position
+				+ ", company = " + company
+				+ ", salary = " + salary);
+	}
 }
