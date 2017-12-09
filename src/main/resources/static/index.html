@@ -1,0 +1,62 @@
+<html ng-app="vacanciesApp" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Java Vacancies' Rating</title>
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/style.css" rel="stylesheet"/>
+</head>
+<body ng-controller="VacanciesController" ng-init="init()">
+
+	<h1>Search vacancies</h1>
+    <form ng-submit="submit()">
+    	<p>Keyword: <input type="text" ng-model="searchParameters.keyword" /></p>
+        <p>Salary: <select name="salary" ng-model="searchParameters.salary">
+                             <option value="100000">100000</option>
+                             <option value="150000">150000</option>
+                             <option value="200000">200000</option>
+                             <option value="250000">250000</option>
+                          </select>  
+        <p>Keyword limit: <select name="keywordLimit" ng-model="searchParameters.keywordLimit">
+                             <option value="5">5</option>
+                             <option value="10">10</option>
+                             <option value="20">20</option>
+                          </select>  
+        <p>Items on page: <select name="itemsOnPage" ng-model="searchParameters.itemsOnPage">
+                             <option value="100">100</option>
+                             <option value="200">200</option>
+                             <option value="300">300</option>
+                          </select>  
+                        </p>
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+
+    <div>
+		<table class="table">
+			<thead>
+				<tr>
+					<td>Id</td>
+					<td>Position</td>
+					<td>Company</td>
+					<td>Salary</td>
+					<td>Keywords</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="vacancy in vacancies">
+					<td>{{vacancy.id}}</td>
+					<td>{{vacancy.position}}</td>
+					<td>{{vacancy.company}}</td>
+					<td>{{vacancy.mediumSalary}}</td>
+					<td>{{vacancy.keywords}}</td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
+
+	<script src="js/angular.js"></script>
+	<script src="js/angular-route.js"></script>
+	<script src="js/app/app.js"></script>
+	<script src="js/app/controller.js"></script>
+	<script src="js/app/service.js"></script>
+</body>
+</html>
