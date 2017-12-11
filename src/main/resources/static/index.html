@@ -27,7 +27,7 @@
                              <option value="300">300</option>
                           </select>  
                         </p>
-        <p><input type="submit" value="Submit" /></p>
+        <p><input type="submit" value="Submit" ng-disabled="isFormInvalid()"/></p>
     </form>
 
     <div>
@@ -43,7 +43,7 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="vacancy in vacancies">
-					<td>{{vacancy.id}}</td>
+					<td><a ng-href="https://spb.hh.ru/vacancy/{{vacancy.id}}">{{vacancy.position}}</a>
 					<td>{{vacancy.position}}</td>
 					<td>{{vacancy.company}}</td>
 					<td>{{vacancy.mediumSalary}}</td>

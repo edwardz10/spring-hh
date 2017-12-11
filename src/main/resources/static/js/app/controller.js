@@ -5,10 +5,22 @@ controllerModule.controller('VacanciesController', function($scope, $http, $inte
     $scope.vacancies = [];
     $scope.searchParameters = {};
 
+    startFeed = function() {
+        console.log('Start feed');
+        VacanciesService.startFeed($scope.searchParameters);
+        $interval(feedVacanciesAtInterval, 2000);
+    }
+
     $scope.submit = function () {
         console.log('submit');
+        startFeed();
     }
-	
+
+    $scope.isFormInvalid = function() {
+        return $scope.searchParameters.keyword == undefined
+                || $scope.searchParameters.salary == undefined;
+    }
+
     $scope.init = function () {
         console.log('AAA');
         $scope.buttonLabel = "Start feed";
@@ -17,27 +29,11 @@ controllerModule.controller('VacanciesController', function($scope, $http, $inte
         $scope.searchParameters.itemsOnPage= 100;
     }
 
-    feedUsersAtInterval = function() {
-        UserService.getUsers().then(function(users){
-            $scope.users = users;
+    feedVacanciesAtInterval = function() {
+        VacanciesService.getVacancies().then(function(vacancies){
+            $scope.vacancies = vacancies;
         });
     }
 
-    $scope.controlFeed = function() {
-        if ($scope.buttonLabel === 'Start feed') {
-            console.log('Start feed');
-            UserService.startFeed();
-            $scope.buttonLabel = 'Stop feed';
-
-            $interval(feedUsersAtInterval, 2000);
-
-        } else if ($scope.buttonLabel === 'Stop feed'){
-            console.log('Stop feed');
-            UserService.stopFeed();
-            $scope.buttonLabel = 'Start feed';
-        } else {
-            console.log('Not implemented');
-        }
-    }
 
 });
