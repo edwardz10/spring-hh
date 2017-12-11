@@ -47,7 +47,7 @@ public class VacancyController {
 
     @RequestMapping(value="/start", method=RequestMethod.POST)
     public ResponseEntity<?> startFeed(@RequestBody SearchParameters searchParameters) {
-        LOG.info("search params: keyword=" + searchParameters.getKeyword() + ", salary=" + searchParameters.getSalary());
+        LOG.info("Search params: keyword=" + searchParameters.getKeyword() + ", salary=" + searchParameters.getSalary());
         searchService.startFeed(searchParameters);
 
 //        vacancies.sort((o1, o2) -> o2.getMediumSalary().compareTo(o1.getMediumSalary()));
@@ -59,7 +59,13 @@ public class VacancyController {
         
         return new ResponseEntity(HttpStatus.OK);
     }
-    
+
+    @RequestMapping(value="/stop", method=RequestMethod.POST)
+    public ResponseEntity<?> stopFeedAndReset() {
+        LOG.info("Stop vacancies feed and reset");
+        searchService.stop();
+        return new ResponseEntity(HttpStatus.OK);
+    }    
 //    @RequestMapping(value="/search", method=RequestMethod.POST)
 //    public String searchSubmit(@ModelAttribute SearchParameters searchParams, Model model) {
 //        LOG.info("search params: keyword=" + searchParams.getKeyword() + ", salary=" + searchParams.getSalary());

@@ -18,4 +18,13 @@ servicesModule.service('VacanciesService', function($http) {
         });
     }
 
+    this.stopFeed = function(searchParameters) {
+        console.log("service stop feed....");
+        $http.post('http://localhost:8080/spring-hh-0.0.1-SNAPSHOT/api/vacancies/stop', '').then(function() {
+            console.log('service stop feed success');
+        }).catch(function(err) {
+            console.log('service start feed failure');
+        });
+    }
+
 });

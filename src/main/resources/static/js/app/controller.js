@@ -6,14 +6,19 @@ controllerModule.controller('VacanciesController', function($scope, $http, $inte
     $scope.searchParameters = {};
 
     startFeed = function() {
-        console.log('Start feed');
         VacanciesService.startFeed($scope.searchParameters);
         $interval(feedVacanciesAtInterval, 2000);
     }
 
     $scope.submit = function () {
-        console.log('submit');
-        startFeed();
+        if ($scope.buttonLabel == "Start feed") {
+            console.log("Start feed");
+            $scope.buttonLabel = "Stop feed & reset";
+            startFeed();
+        } else {
+            $scope.buttonLabel = "Start feed";
+            VacanciesService.stopFeed();
+        }
     }
 
     $scope.isFormInvalid = function() {

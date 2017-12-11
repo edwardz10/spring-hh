@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
@@ -188,6 +188,18 @@ public class VacanciesSearchService {
 		return vacancyIds;
 	}
 
+    public void stop() {
+        executorService.shutdown();
+        
+        try {
+            executorService.awaitTermination(5, TimeUnit.SECONDS);
+            vacancies.clear();
+        } catch (InterruptedException ie) {
+            LOG.warn("Failed to stop threads: " + ie.getLocalizedMessage());
+        }
+        
+    }
+
 	public static void main(String[] args) {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -224,4 +236,5 @@ public class VacanciesSearchService {
 				+ ", company = " + company
 				+ ", salary = " + salary);
 	}
+
 }
