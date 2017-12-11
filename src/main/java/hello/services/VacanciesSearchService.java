@@ -71,7 +71,6 @@ public class VacanciesSearchService {
 		omittedKeywords = new LinkedList<>();
 
 		availableProcessors = Runtime.getRuntime().availableProcessors();
-		executorService = Executors.newFixedThreadPool(availableProcessors);
 
 		LOG.info("Available processors: " + availableProcessors);
 	}
@@ -81,6 +80,7 @@ public class VacanciesSearchService {
 	}
 
 	public void startFeed(SearchParameters searchParams) {
+	    executorService = Executors.newFixedThreadPool(availableProcessors);
         addOmittedKeyword(searchParams.getKeyword());
 		Set<Long> vacancyIds = getVacancyIds(searchParams); 
 		LinkedList<Long> vacanciesFromHH = new LinkedList<>();

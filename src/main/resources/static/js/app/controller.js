@@ -40,5 +40,14 @@ controllerModule.controller('VacanciesController', function($scope, $http, $inte
         });
     }
 
+    $scope.setOrderProperty = function(propertyName) {
+        if ($scope.orderProperty === propertyName) {
+            $scope.orderProperty = '-' + propertyName;
+        } else if ($scope.orderProperty === '-' + propertyName) {
+            $scope.orderProperty = propertyName;
+        } else {
+            $scope.orderProperty = propertyName;
+    }
+}
 
 });

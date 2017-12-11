@@ -35,14 +35,22 @@
 			<thead>
 				<tr>
 					<td>Id</td>
-					<td>Position</td>
+					<td>
+                        <a href="#" ng-click="setOrderProperty('position')">
+                            Position
+                        </a>
+                    </td>
 					<td>Company</td>
-					<td>Salary</td>
+					<td>
+                        <a href="#" ng-click="setOrderProperty('mediumSalary')">
+                            Salary
+                        </a>
+                    </td>
 					<td>Keywords</td>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="vacancy in vacancies">
+				<tr ng-repeat="vacancy in vacancies | orderBy:orderProperty">
 					<td><a ng-href="https://spb.hh.ru/vacancy/{{vacancy.id}}">{{vacancy.position}}</a>
 					<td>{{vacancy.position}}</td>
 					<td>{{vacancy.company}}</td>
