@@ -97,6 +97,7 @@ public class VacanciesSearchService {
 					LOG.info("Vacancy with id=" + vId + " must be fetched from hh.ru...");
 				} else {
 					vacancies.add(v);
+					statisticsService.registerAllKeywords(StaticUtils.stringToStringSet(v.getKeywords()));
 					LOG.info("Fetched vacancy with id=" + v.getId() + " from the DB...");
 				}
 			}
@@ -104,7 +105,7 @@ public class VacanciesSearchService {
 		
 		if (!vacanciesFromHH.isEmpty()) {
 			for (int i = 0; i < availableProcessors; i++) {
-				executorService.execute(new VacanciesFeeder(this, vacanciesFromHH, vacancies));
+				executorService.execute(new VacanciesFeeder(this, statisticsService, vacanciesFromHH, vacancies));
 			}
 
 		}
@@ -134,7 +135,7 @@ public class VacanciesSearchService {
 		
 		if (!vacanciesFromHH.isEmpty()) {
 			for (int i = 0; i < availableProcessors; i++) {
-				executorService.execute(new VacanciesFeeder(this, vacanciesFromHH, vacancies));
+				executorService.execute(new VacanciesFeeder(this, statisticsService, vacanciesFromHH, vacancies));
 			}
 
 		}

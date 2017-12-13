@@ -4,7 +4,7 @@ controllerModule.controller('VacanciesController', function($scope, $http, $inte
 
     $scope.vacancies = [];
     $scope.searchParameters = {};
-
+    
     startFeed = function() {
         VacanciesService.startFeed($scope.searchParameters);
         $interval(feedVacanciesAtInterval, 2000);
@@ -37,6 +37,9 @@ controllerModule.controller('VacanciesController', function($scope, $http, $inte
     feedVacanciesAtInterval = function() {
         VacanciesService.getVacancies().then(function(vacancies){
             $scope.vacancies = vacancies;
+        });
+        VacanciesService.getKeywords().then(function(keywords){
+            $scope.keywords = keywords;
         });
     }
 

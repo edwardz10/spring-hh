@@ -25,6 +25,7 @@ class VacanciesFeeder implements Runnable {
 		static final Logger LOG = LoggerFactory.getLogger(VacanciesFeeder.class);
 
 		private final VacanciesSearchService vacanciesSearchService;
+        private final StatisticsService statisticsService;
 		private final LinkedList<Long> vacancyIds;
 		private final List<Vacancy> vacancies;
 
@@ -32,10 +33,12 @@ class VacanciesFeeder implements Runnable {
 		private HttpHeaders hhhh;
 		private Map<String, String> restP;
 		
-		public VacanciesFeeder(VacanciesSearchService vacanciesSearchService, 
+		public VacanciesFeeder(VacanciesSearchService vacanciesSearchService,
+		                       StatisticsService statisticsService,
 							   LinkedList<Long> vacancyIds, 
 							   List<Vacancy> vacancies) {
 			this.vacanciesSearchService = vacanciesSearchService;
+			this.statisticsService = statisticsService;
 			this.vacancyIds = vacancyIds;
 			this.vacancies = vacancies;
 
@@ -51,24 +54,24 @@ class VacanciesFeeder implements Runnable {
 			String url, vacancyResponse;
 			Vacancy v;
 
-			while (!vacancyIds.isEmpty()) {
-				
-				synchronized (vacancyIds) {
-					VacanciesSearchService.LOG.info(Thread.currentThread() + " " + vacancyIds.size() + " vacancies in the queue...");
-					vacancyId = vacancyIds.pop();
-				}
-
-				url = this.vacanciesSearchService.urlBuilder.getVacancyUrl(vacancyId);
-				VacanciesSearchService.LOG.info(Thread.currentThread() + " Fetch vacancy with id=" + vacancyId + " from a REST request...");
-				
-				vacancyResponse = restT.getForObject(url, String.class, restP);
-				v = getVacancy(vacancyId, url, vacancyResponse);
-
-				if (v != null) {
-					vacancies.add(v);
-	
-					this.vacanciesSearchService.vacanciesRepository.save(v);
-				}
+			synchronized (vacancyIds) {
+    			while (!vacancyIds.isEmpty()) {
+    				
+   					VacanciesSearchService.LOG.info(Thread.currentThread() + " " + vacancyIds.size() + " vacancies in the queue...");
+   					vacancyId = vacancyIds.pop();
+    
+    				url = this.vacanciesSearchService.urlBuilder.getVacancyUrl(vacancyId);
+    				VacanciesSearchService.LOG.info(Thread.currentThread() + " Fetch vacancy with id=" + vacancyId + " from a REST request...");
+    				
+    				vacancyResponse = restT.getForObject(url, String.class, restP);
+    				v = getVacancy(vacancyId, url, vacancyResponse);
+    
+    				if (v != null) {
+    					vacancies.add(v);
+    	
+    					this.vacanciesSearchService.vacanciesRepository.save(v);
+    				}
+    			}
 			}
 
 			LOG.info(Thread.currentThread() + " No more vacancies in the queue.. exit");
@@ -83,7 +86,7 @@ class VacanciesFeeder implements Runnable {
 				keywordSet = this.vacanciesSearchService.analizerService.getKeywordsHypothetical(doc);
 			}
 
-			registerAllKeywords(keywordSet);
+			statisticsService.registerAllKeywords(keywordSet);
 			
 			String position = getPosition(doc);
 			String company = getCompany(doc);
@@ -124,10 +127,6 @@ class VacanciesFeeder implements Runnable {
 			}
 			
 			return keywordsSet;
-		}
-
-		protected void registerAllKeywords(Set<String> keywordSet) {
-			keywordSet.forEach(i -> keywordSet.forEach(j -> this.vacanciesSearchService.statisticsService.register(i, j)));
 		}
 
 		protected String getPosition(Document vacancyDoc) {

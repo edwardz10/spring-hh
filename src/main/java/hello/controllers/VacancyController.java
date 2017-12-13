@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,30 +31,25 @@ public class VacancyController {
 	private VacanciesSearchService searchService;
 	@Autowired
 	private StatisticsService statisticsService;
-	
-//	@RequestMapping(value="/search", method=RequestMethod.GET)
-//    public String searchForm(Model model) {
-//        model.addAttribute("search", new SearchParameters());
-//        LOG.info("seachForm");
-//        return "search";
-//    }
-    @RequestMapping(method = GET)
+
+	private SearchParameters searchParameters;
+
+	@RequestMapping(method = GET)
     public ResponseEntity<List<Vacancy>> getVacancies() {
         return new ResponseEntity(searchService.getVacancies(), HttpStatus.OK);
     }
 
+    @RequestMapping(value="/keywords", method = GET)
+    public ResponseEntity<String> getKeywords() {
+        List<Keyword> keywords = statisticsService.getTopKeywords(searchParameters.getKeyword(), searchParameters.getKeywordLimit());
+        return new ResponseEntity(StaticUtils.keywordsToString(keywords), HttpStatus.OK);
+    }
+    
     @RequestMapping(value="/start", method=RequestMethod.POST)
     public ResponseEntity<?> startFeed(@RequestBody SearchParameters searchParameters) {
         LOG.info("Search params: keyword=" + searchParameters.getKeyword() + ", salary=" + searchParameters.getSalary());
+        this.searchParameters = searchParameters;
         searchService.startFeed(searchParameters);
-
-//        vacancies.sort((o1, o2) -> o2.getMediumSalary().compareTo(o1.getMediumSalary()));
-//        
-//        LOG.info("Found " + vacancies.size() + " vacancies");
-//
-//        List<Keyword> topKeywords = statisticsService.getTopKeywords(searchParameters.getKeyword(), searchParameters.getKeywordLimit());
-//        LOG.info("top keywords: " + topKeywords);
-        
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -64,6 +57,7 @@ public class VacancyController {
     public ResponseEntity<?> stopFeedAndReset() {
         LOG.info("Stop vacancies feed and reset");
         searchService.stop();
+        statisticsService.clear();
         return new ResponseEntity(HttpStatus.OK);
     }    
 //    @RequestMapping(value="/search", method=RequestMethod.POST)

@@ -1,5 +1,7 @@
 package hello.services;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,6 +40,10 @@ public class StaticUtils {
 
 		return keywords.toString().trim();
 	}
+
+    public static Set<String> stringToStringSet(String string) {
+        return new HashSet<String>(Arrays.asList(string.split(", ")));
+    }
 
 	public static String keywordsToString(List<Keyword> kk) {
 		StringBuilder keywords = new StringBuilder();

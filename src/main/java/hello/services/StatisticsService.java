@@ -1,6 +1,7 @@
 package hello.services;
 
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,10 @@ public class StatisticsService {
 	public StatisticsService(KeywordRepository keywordRepository) {
 		this.keywordRepository = keywordRepository;
 	}
+
+    public void registerAllKeywords(Set<String> keywordSet) {
+        keywordSet.forEach(i -> keywordSet.forEach(j -> register(i, j)));
+    }
 	
 	public synchronized void register(String searchKey, String keyword) {
 		try {
@@ -43,5 +48,9 @@ public class StatisticsService {
 		List<Keyword> topKeywords = keywordRepository.getSortedKeywords(searchKey);
 
 		return (topKeywords.size() > limit) ? topKeywords.subList(0, limit) : topKeywords;
+	}
+
+	public void clear() {
+	    keywordRepository.deleteAll();
 	}
 }
