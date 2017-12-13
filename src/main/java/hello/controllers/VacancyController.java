@@ -41,8 +41,12 @@ public class VacancyController {
 
     @RequestMapping(value="/keywords", method = GET)
     public ResponseEntity<String> getKeywords() {
-        List<Keyword> keywords = statisticsService.getTopKeywords(searchParameters.getKeyword(), searchParameters.getKeywordLimit());
-        return new ResponseEntity(StaticUtils.keywordsToString(keywords), HttpStatus.OK);
+        if (searchParameters != null) {
+            List<Keyword> keywords = statisticsService.getTopKeywords(searchParameters.getKeyword(), searchParameters.getKeywordLimit());
+            return new ResponseEntity(StaticUtils.keywordsToString(keywords), HttpStatus.OK);
+        } else {
+            return new ResponseEntity("", HttpStatus.OK);
+        }
     }
     
     @RequestMapping(value="/start", method=RequestMethod.POST)
